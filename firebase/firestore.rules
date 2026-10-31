@@ -1,0 +1,71 @@
+rules_version = '2';
+
+// English City Simulator – Firestore Security Rules
+//
+// The web app reads and writes ALL data through the backend API (Cloud Run, Admin SDK),
+// which bypasses these rules and enforces roles itself. Rules here are defence in depth:
+//  - no client can write anything;
+//  - a signed-in user may read only their own profile and their own sessions/results;
+//  - school admins may read their own school's data;
+//  - nobody can read another school's data; platform admins get no learning data.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function tenantOf() { return request.auth.token.tenantId; }
+    function roleOf() { return request.auth.token.role; }
+    function inTenant(t) { return signedIn() && tenantOf() == t; }
+    function isSchoolAdmin(t) { return inTenant(t) && roleOf() == 'school_admin'; }
+
+    match /locations/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /tenants/{t} {
+      allow read: if isSchoolAdmin(t);
+      allow write: if false;
+
+      match /users/{uid} {
+        allow read: if inTenant(t) && (request.auth.uid == uid || roleOf() == 'school_admin');
+        allow write: if false;
+      }
+
+      match /missions/{mid} {
+        allow read: if inTenant(t) && (resource.data.status == 'approved' || roleOf() in ['teacher', 'school_admin']);
+        allow write: if false;
+        match /versions/{v} {
+          allow read: if inTenant(t) && roleOf() in ['teacher', 'school_admin'];
+          allow write: if false;
+        }
+      }
+
+      match /game_sessions/{sid} {
+        allow read: if inTenant(t) && (resource.data.uid == request.auth.uid || roleOf() == 'school_admin');
+        allow write: if false;
+        match /conversation_turns/{turnId} {
+          allow read: if inTenant(t) && (
+            roleOf() == 'school_admin' ||
+            get(/databases/$(database)/documents/tenants/$(t)/game_sessions/$(sid)).data.uid == request.auth.uid
+          );
+          allow write: if false;
+        }
+      }
+
+      match /assessments/{aid} {
+        allow read: if inTenant(t) && (resource.data.uid == request.auth.uid || roleOf() == 'school_admin');
+        allow write: if false;
+      }
+
+      // Courses, assignments, usage counters/logs, audit logs: school admins only (others use the API).
+      match /{collection}/{doc} {
+        allow read: if isSchoolAdmin(t) && collection in ['courses', 'assignments', 'usage_counters', 'usage_logs', 'audit_logs'];
+        allow write: if false;
+      }
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "k26game1",
+    "dev": "k26game1",
+    "prod": "k26game1-prod"
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "id": "M05",
+  "locationId": "university",
+  "level": "B1",
+  "title": { "en": "Asking for Academic Information", "vi": "Hỏi thông tin học vụ" },
+  "summary": {
+    "en": "Visit the academic office to register for an elective course, ask about documents and the schedule, and deal with a changed deadline.",
+    "vi": "Đến phòng học vụ để đăng ký một môn tự chọn, hỏi về giấy tờ cần nộp và lịch học, và xử lý khi hạn chót bị thay đổi."
+  },
+  "briefing": {
+    "en": "You want to take the elective course Intercultural Communication next semester. You go to the Academic Office at Lakeside University to ask how to register. A friend told you the deadline is Friday, 14 March, but you should check everything carefully and make sure you know exactly what to do next.",
+    "vi": "Bạn muốn học môn tự chọn Giao tiếp liên văn hóa vào học kỳ tới. Bạn đến Phòng Học vụ của trường Đại học Lakeside để hỏi cách đăng ký. Một người bạn nói với bạn rằng hạn chót là thứ Sáu, ngày 14 tháng 3, nhưng bạn nên kiểm tra kỹ mọi thông tin và chắc chắn biết chính xác mình cần làm gì tiếp theo."
+  },
+  "goals": [
+    { "en": "Introduce yourself and explain what you want", "vi": "Giới thiệu bản thân và nói rõ mong muốn" },
+    { "en": "Ask about the required documents and the class schedule", "vi": "Hỏi về giấy tờ cần thiết và lịch học" },
+    { "en": "Check the new deadline and how to submit the form", "vi": "Xác nhận hạn chót mới và cách nộp đơn" },
+    { "en": "Summarise the information to make sure you understood", "vi": "Tóm tắt lại thông tin để chắc chắn mình đã hiểu" }
+  ],
+  "estimatedMinutes": 12,
+  "xpReward": 110,
+  "studentCard": [
+    { "label": "Name", "value": "Do Quang Huy" },
+    { "label": "Student ID", "value": "22041587" },
+    { "label": "Programme", "value": "Business English, Year 2" },
+    { "label": "Course you want", "value": "Intercultural Communication (ENG 2045), elective" },
+    { "label": "Deadline you heard", "value": "Friday, 14 March (from a friend)" },
+    { "label": "Your free time", "value": "Tuesday and Thursday afternoons" },
+    { "label": "Academic advisor", "value": "Dr. Tran, available tomorrow morning" }
+  ],
+  "npc": {
+    "name": "Rachel Morgan",
+    "role": "Academic officer, Lakeside University Academic Office",
+    "avatar": "academic-officer",
+    "voice": { "languageCode": "en-US", "name": "en-US-Neural2-H" },
+    "personality": "Kind, organised and precise. She speaks slowly and clearly, uses simple words and gives information step by step.",
+    "openingLine": "Hi there, welcome to the Academic Office. What can I do for you?",
+    "closingLine": "You're welcome. Good luck with your registration, and see you before the deadline!"
+  },
+  "npcFacts": [
+    "Student 22041587, Do Quang Huy, is allowed to take the elective ENG 2045 Intercultural Communication.",
+    "ENG 2045 meets on Tuesday and Thursday from 1:30 to 3:00 pm in Room B204. There are 4 places left out of 30.",
+    "Required documents: the completed registration form A2, a copy of the student ID card, and the academic advisor's signature on the form.",
+    "Form A2 can be picked up at this office now.",
+    "The registration deadline has changed from Friday, 14 March to Wednesday, 12 March at 4 pm, because the new timetable will be published earlier.",
+    "The online student portal is closed for maintenance this week, so forms must be submitted in person at the Academic Office, Room 105, open 8 am to 4 pm.",
+    "Late forms are not accepted; a student who misses the deadline must wait until next semester."
+  ],
+  "stages": [
+    {
+      "id": "introducing",
+      "title": "Introducing Yourself and Your Request",
+      "npcGoal": "Greet the student, ask for their name and student ID, and ask what they need help with.",
+      "fallbackLine": "Hello! Could you tell me your name and student ID, please? How can I help you?",
+      "objectives": [
+        {
+          "id": "introduce_self",
+          "description": "Student gives their name (Do Quang Huy) and/or student ID 22041587.",
+          "label": { "en": "Introduce yourself", "vi": "Giới thiệu bản thân" },
+          "required": true,
+          "evidenceKeywords": ["22041587", "student id", "quang huy", "my name is"]
+        },
+        {
+          "id": "state_request",
+          "description": "Student explains that they want to register for the elective course Intercultural Communication (ENG 2045).",
+          "label": { "en": "Say what you want", "vi": "Nói mong muốn của bạn" },
+          "required": true,
+          "evidenceKeywords": ["register", "sign up", "enrol", "enroll", "intercultural communication", "2045"]
+        }
+      ],
+      "hints": [
+        "Try: 'My name is… and my student ID is…'",
+        "Try: 'I'd like to register for the course Intercultural Communication.'"
+      ],
+      "sampleStudentLines": [
+        "Good morning. My name is Do Quang Huy, and my student ID is 22041587.",
+        "I'd like to register for the elective course Intercultural Communication, ENG 2045."
+      ]
+    },
+    {
+      "id": "asking_information",
+      "title": "Asking About Registration",
+      "npcGoal": "Confirm that the student can take the course. Answer questions about the required documents and the class schedule using only the facts. Wait for the student to ask; do not give all the information at once.",
+      "fallbackLine": "Yes, you can take that course. Do you have any questions about how to register?",
+      "objectives": [
+        {
+          "id": "ask_documents",
+          "description": "Student asks which documents or forms they need for registration.",
+          "label": { "en": "Ask about documents", "vi": "Hỏi về giấy tờ" },
+          "required": true,
+          "evidenceKeywords": ["documents", "what do i need", "form", "papers"]
+        },
+        {
+          "id": "ask_schedule",
+          "description": "Student asks when the class meets (days/times) or about the timetable, ideally checking it fits their free time.",
+          "label": { "en": "Ask about the schedule", "vi": "Hỏi về lịch học" },
+          "required": true,
+          "evidenceKeywords": ["schedule", "timetable", "what day", "when is the class", "what time"]
+        }
+      ],
+      "hints": [
+        "Try: 'What documents do I need?'",
+        "Try: 'When is the class? I'm free on Tuesday and Thursday afternoons.'"
+      ],
+      "sampleStudentLines": [
+        "What documents do I need to register for the course?",
+        "And what is the class schedule? I'm only free on Tuesday and Thursday afternoons."
+      ]
+    },
+    {
+      "id": "deadline_changed",
+      "title": "The Deadline Has Changed",
+      "npcGoal": "Explain the deadline change and the in-person submission rule in simple words. Answer the student's questions about the new deadline, how to submit and what happens if they are late.",
+      "twist": "At the start of this stage, say you have just remembered some important news: the registration deadline has changed from Friday, 14 March to Wednesday, 12 March at 4 pm, and the online portal is closed this week. Do not explain how to submit until the student asks.",
+      "fallbackLine": "Oh, one important thing: the deadline has changed. It's now Wednesday, 12 March, at 4 pm, not Friday.",
+      "objectives": [
+        {
+          "id": "check_new_deadline",
+          "description": "Student checks or repeats the new deadline (Wednesday, 12 March, 4 pm) or asks for clarification about the change.",
+          "label": { "en": "Check the new deadline", "vi": "Xác nhận hạn chót mới" },
+          "required": true,
+          "evidenceKeywords": ["wednesday", "12 march", "new deadline", "changed", "4 pm"]
+        },
+        {
+          "id": "ask_consequence",
+          "description": "Student asks what happens if they miss the deadline or are late.",
+          "label": { "en": "Ask about being late", "vi": "Hỏi nếu nộp muộn" },
+          "required": true,
+          "evidenceKeywords": ["what happens if", "miss the deadline", "late"]
+        },
+        {
+          "id": "ask_how_to_submit",
+          "description": "Student asks how or where to submit the form (online, by email or in person).",
+          "label": { "en": "Ask how to submit", "vi": "Hỏi cách nộp đơn" },
+          "required": true,
+          "evidenceKeywords": ["submit", "in person", "online", "hand in", "where should i"]
+        }
+      ],
+      "hints": [
+        "Try: 'Sorry, did you say the new deadline is Wednesday?'",
+        "Try: 'What happens if I miss the deadline?'",
+        "Try: 'Can I submit the form online?'"
+      ],
+      "sampleStudentLines": [
+        "Sorry, did you say the new deadline is Wednesday, 12 March, at 4 pm? My friend told me it was Friday.",
+        "What happens if I miss the deadline?",
+        "Can I submit the form online, or do I have to come here in person?"
+      ]
+    },
+    {
+      "id": "wrapping_up",
+      "title": "Wrapping Up",
+      "npcGoal": "Listen to the student's summary and correct anything that is wrong. Offer the form A2 and say goodbye kindly.",
+      "fallbackLine": "Is everything clear? Do you want to check anything before you go?",
+      "objectives": [
+        {
+          "id": "summarise_info",
+          "description": "Student summarises the key information (documents, new deadline, in-person submission) to check understanding.",
+          "label": { "en": "Summarise the information", "vi": "Tóm tắt thông tin" },
+          "required": true,
+          "evidenceKeywords": ["just to check", "so i need to", "let me repeat", "to confirm"]
+        },
+        {
+          "id": "plan_next_step",
+          "description": "Student says what they will do next, e.g. ask their advisor to sign the form tomorrow morning.",
+          "label": { "en": "Say your next step", "vi": "Nói bước tiếp theo" },
+          "required": true,
+          "evidenceKeywords": ["advisor", "signature", "sign it", "tomorrow morning"]
+        },
+        {
+          "id": "close_politely",
+          "description": "Student thanks the officer and says goodbye politely.",
+          "label": { "en": "Say goodbye politely", "vi": "Chào tạm biệt lịch sự" },
+          "required": false,
+          "evidenceKeywords": ["thank you for your help", "thanks for your help", "goodbye", "have a good day"]
+        }
+      ],
+      "hints": [
+        "Try: 'Just to check, so I need to…'",
+        "Try: 'I'll ask my advisor to sign the form tomorrow.'"
+      ],
+      "sampleStudentLines": [
+        "Just to check, so I need to bring form A2 and a copy of my student ID, and hand them in here before Wednesday at 4 pm.",
+        "I'll ask my advisor, Dr. Tran, to sign the form tomorrow morning. Thank you for your help!"
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "register",
+    "elective course",
+    "student ID",
+    "registration form",
+    "required documents",
+    "schedule",
+    "deadline",
+    "submit",
+    "in person",
+    "academic advisor",
+    "signature"
+  ],
+  "limits": { "maxTurns": 24, "maxMinutes": 20, "maxReplays": 10, "maxHints": 5, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}

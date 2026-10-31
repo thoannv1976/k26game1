@@ -1,0 +1,210 @@
+{
+  "id": "M06",
+  "locationId": "university",
+  "level": "B2",
+  "title": { "en": "International Group Project Discussion", "vi": "Thảo luận dự án nhóm quốc tế" },
+  "summary": {
+    "en": "Plan a group presentation with an international classmate: share opinions, disagree politely, divide tasks, solve a deadline problem and summarise decisions.",
+    "vi": "Lên kế hoạch thuyết trình nhóm với một bạn học quốc tế: chia sẻ ý kiến, phản biện lịch sự, phân chia công việc, giải quyết vấn đề về hạn chót và tóm tắt các quyết định."
+  },
+  "briefing": {
+    "en": "You are meeting Lukas, an exchange student from Germany, in the library to plan your group's 10-minute presentation on sustainable tourism in Southeast Asia. Your group also includes Mai and Ana, who cannot join today. Share your own ideas from the card, respond politely when Lukas disagrees, and agree on who does what. Be ready to solve a problem if one of your teammates cannot keep to the plan.",
+    "vi": "Bạn gặp Lukas, một sinh viên trao đổi đến từ Đức, ở thư viện để lên kế hoạch cho bài thuyết trình nhóm 10 phút về du lịch bền vững ở Đông Nam Á. Nhóm bạn còn có Mai và Ana, nhưng hôm nay họ không tham gia được. Hãy chia sẻ ý tưởng của bạn trên thẻ, phản hồi lịch sự khi Lukas không đồng ý và thống nhất ai làm việc gì. Hãy sẵn sàng giải quyết vấn đề nếu một thành viên không theo kịp kế hoạch."
+  },
+  "goals": [
+    { "en": "Give your opinion and support it with reasons", "vi": "Nêu ý kiến và đưa ra lý do thuyết phục" },
+    { "en": "Agree or disagree politely and suggest a compromise", "vi": "Đồng ý hoặc phản đối lịch sự và đề xuất phương án dung hòa" },
+    { "en": "Divide the tasks and agree on a deadline", "vi": "Phân chia công việc và thống nhất hạn chót" },
+    { "en": "Handle a problem when a teammate cannot meet the deadline", "vi": "Xử lý vấn đề khi một thành viên không kịp hạn chót" },
+    { "en": "Summarise the group's decisions", "vi": "Tóm tắt các quyết định của nhóm" }
+  ],
+  "estimatedMinutes": 18,
+  "xpReward": 170,
+  "studentCard": [
+    { "label": "Course", "value": "Global Business Communication" },
+    { "label": "Project", "value": "10-minute group presentation: Sustainable tourism in Southeast Asia" },
+    { "label": "Group", "value": "You, Lukas (Germany), Mai (Vietnam), Ana (Brazil)" },
+    { "label": "Your opinion", "value": "Focus on one case study, Ha Long Bay, because you can talk to local people and guides in Vietnamese" },
+    { "label": "Your strengths", "value": "Designing slides and doing interviews" },
+    { "label": "Lukas's strength", "value": "Data analysis" },
+    { "label": "Internal draft deadline", "value": "Friday, 17 May" },
+    { "label": "Presentation day", "value": "Tuesday, 21 May (cannot be changed)" },
+    { "label": "Your availability", "value": "Free at weekends; busy on Wednesday evenings (part-time job)" }
+  ],
+  "npc": {
+    "name": "Lukas Becker",
+    "role": "Exchange student from Germany, your project teammate",
+    "avatar": "intl-student",
+    "voice": { "languageCode": "en-GB", "name": "en-GB-Neural2-D" },
+    "personality": "Direct, well organised and a little perfectionist; he likes data and challenges ideas, but he is friendly and open to good arguments. He speaks naturally at B2 level and expects the student to explain and justify their ideas.",
+    "openingLine": "Hi! Thanks for coming. So, I've been thinking about our presentation. I think we should compare five Southeast Asian countries. What do you think?",
+    "closingLine": "Great, I feel much better now we have a clear plan. I'll message Mai and Ana tonight. See you on Friday!"
+  },
+  "npcFacts": [
+    "Lukas first wants to compare five countries (Thailand, Vietnam, Indonesia, Malaysia and the Philippines), but he will accept a single case study if the student gives good reasons.",
+    "Lukas wants an online survey of 200 tourists; he will accept a smaller survey of about 50 tourists combined with the student's case study.",
+    "Lukas is good at data analysis; he has an exam on Thursday, 16 May, but can still finish the data analysis by Friday, 17 May.",
+    "Mai has already agreed to do background research on tourism policy; Ana has agreed to write the presentation script.",
+    "Ana has to travel home for a family event from Wednesday to Sunday and cannot finish the script by Friday, 17 May.",
+    "Ana can still review the script online on Sunday evening.",
+    "The presentation day, Tuesday, 21 May, cannot be changed, and the lecturer expects all members to speak."
+  ],
+  "stages": [
+    {
+      "id": "sharing_ideas",
+      "title": "Sharing Ideas",
+      "npcGoal": "Present your idea of comparing five countries and ask for the student's opinion. Ask 'why?' if the student does not give a reason, and push for a concrete example.",
+      "fallbackLine": "I think we should compare five countries in Southeast Asia. What's your opinion?",
+      "objectives": [
+        {
+          "id": "give_opinion",
+          "description": "Student clearly states their own opinion: the group should focus on one case study (Ha Long Bay) rather than five countries.",
+          "label": { "en": "Give your opinion", "vi": "Nêu ý kiến của bạn" },
+          "required": true,
+          "evidenceKeywords": ["in my opinion", "i think", "i believe", "from my point of view", "case study"]
+        },
+        {
+          "id": "give_reason",
+          "description": "Student supports the opinion with a reason or example (e.g. Ha Long Bay, access to local people in Vietnamese, more depth in 10 minutes).",
+          "label": { "en": "Support it with a reason", "vi": "Đưa ra lý do" },
+          "required": true,
+          "evidenceKeywords": ["because", "the reason", "for example", "ha long bay", "in depth"]
+        }
+      ],
+      "hints": [
+        "Try: 'In my opinion, we should focus on one case study.'",
+        "Try: 'The reason is that we only have ten minutes…'",
+        "Try: 'For example, Ha Long Bay…'"
+      ],
+      "sampleStudentLines": [
+        "In my opinion, we should focus on one case study instead of five countries.",
+        "The reason is that we only have ten minutes. For example, Ha Long Bay is a good choice because I can talk to local people and guides in Vietnamese."
+      ]
+    },
+    {
+      "id": "agree_disagree",
+      "title": "Agreeing and Disagreeing",
+      "npcGoal": "Accept the case study idea only partly and propose an online survey of 200 tourists. Challenge the student to respond: do they agree, and what would they change? Accept a reasonable compromise.",
+      "fallbackLine": "Okay, one case study could work. But I really want an online survey of 200 tourists to get good data. Do you agree?",
+      "objectives": [
+        {
+          "id": "respond_politely",
+          "description": "Student agrees or disagrees politely with Lukas's survey idea, using polite language (e.g. 'I see your point, but…', 'I'm not sure…').",
+          "label": { "en": "Agree/disagree politely", "vi": "Đồng ý/phản đối lịch sự" },
+          "required": true,
+          "evidenceKeywords": ["i see your point", "i m not sure", "that s a good idea but", "i partly agree", "i agree with you"]
+        },
+        {
+          "id": "suggest_compromise",
+          "description": "Student suggests a compromise, e.g. a smaller survey combined with the case study.",
+          "label": { "en": "Suggest a compromise", "vi": "Đề xuất phương án dung hòa" },
+          "required": true,
+          "evidenceKeywords": ["what if", "how about", "why don t we", "combine", "compromise"]
+        }
+      ],
+      "hints": [
+        "Try: 'I see your point, but I'm not sure we can…'",
+        "Try: 'What if we combine a smaller survey with the case study?'"
+      ],
+      "sampleStudentLines": [
+        "I see your point, and a survey is useful, but I'm not sure we can get 200 answers in two weeks.",
+        "What if we combine a smaller online survey of about 50 tourists with my case study?"
+      ]
+    },
+    {
+      "id": "dividing_tasks",
+      "title": "Dividing Tasks",
+      "npcGoal": "Agree to the compromise and ask how to divide the work between the two of you; mention that Mai is doing background research and Ana is writing the script. Ask the student to propose roles and a deadline for the draft.",
+      "fallbackLine": "Great, that sounds like a good plan. Mai is doing the background research and Ana is writing the script. So how should we divide the rest?",
+      "objectives": [
+        {
+          "id": "volunteer_task",
+          "description": "Student volunteers for a task that matches their strengths (designing the slides and/or doing interviews).",
+          "label": { "en": "Volunteer for a task", "vi": "Nhận một phần việc" },
+          "required": true,
+          "evidenceKeywords": ["slides", "i can handle", "i ll take care", "interviews", "i ll do"]
+        },
+        {
+          "id": "assign_task",
+          "description": "Student suggests a task for Lukas based on his strength (data analysis of the survey).",
+          "label": { "en": "Suggest Lukas's task", "vi": "Đề xuất việc cho Lukas" },
+          "required": true,
+          "evidenceKeywords": ["data analysis", "you could", "you re good at", "analyse", "analyze"]
+        },
+        {
+          "id": "agree_deadline",
+          "description": "Student proposes or confirms the internal draft deadline of Friday, 17 May.",
+          "label": { "en": "Agree on a deadline", "vi": "Thống nhất hạn chót" },
+          "required": true,
+          "evidenceKeywords": ["friday", "17 may", "draft", "by the 17th"]
+        }
+      ],
+      "hints": [
+        "Try: 'I can handle the slides, and I'll do the interviews.'",
+        "Try: 'You're good at numbers, so you could do the data analysis.'",
+        "Try: 'Let's finish our parts by Friday, 17 May.'"
+      ],
+      "sampleStudentLines": [
+        "I can handle the slides, and I'll do the interviews with local people.",
+        "Lukas, you're good at numbers, so you could do the data analysis for the survey.",
+        "Let's all finish our parts by Friday, 17 May, so we have time to rehearse."
+      ]
+    },
+    {
+      "id": "handling_conflict",
+      "title": "Handling a Problem and Summarising",
+      "npcGoal": "Share the bad news about Ana, sound a little stressed and ask the student what the group should do. Discuss the student's solution critically but accept a reasonable plan, then ask the student to summarise everything you have decided.",
+      "twist": "Look at your phone and say you have just received a message from Ana: she has to travel home for a family event from Wednesday to Sunday and cannot finish the script by Friday, 17 May. Suggest, with some worry, that maybe you should just tell the lecturer. Let the student propose a better solution.",
+      "fallbackLine": "Oh no, I just got a message from Ana. She has to travel home for a family event and can't finish the script by Friday. What should we do?",
+      "objectives": [
+        {
+          "id": "show_empathy",
+          "description": "Student shows understanding about Ana's situation before solving the problem.",
+          "label": { "en": "Show understanding", "vi": "Thể hiện sự thông cảm" },
+          "required": false,
+          "evidenceKeywords": ["sorry to hear", "i understand", "not her fault", "that s a shame"]
+        },
+        {
+          "id": "propose_solution",
+          "description": "Student proposes a practical solution, e.g. splitting Ana's part, taking over some of the script, or letting Ana review it online on Sunday.",
+          "label": { "en": "Propose a solution", "vi": "Đề xuất giải pháp" },
+          "required": true,
+          "evidenceKeywords": ["split", "share her part", "take over", "help her", "sunday", "review it"]
+        },
+        {
+          "id": "summarise_decisions",
+          "description": "Student summarises the group's decisions: topic/approach, who does which task, and the deadline.",
+          "label": { "en": "Summarise the decisions", "vi": "Tóm tắt quyết định" },
+          "required": true,
+          "evidenceKeywords": ["to sum up", "so we agreed", "let s summarise", "let s summarize", "in summary", "to summarise"]
+        }
+      ],
+      "hints": [
+        "Try: 'I'm sorry to hear that, but it's not her fault.'",
+        "Try: 'Why don't we split her part between us?'",
+        "Try: 'To sum up, we agreed that…'"
+      ],
+      "sampleStudentLines": [
+        "Oh, I'm sorry to hear that. It's not her fault, so let's not tell the lecturer yet.",
+        "Why don't we split her part? I can write the introduction, Mai can write the conclusion, and Ana can review it online on Sunday evening.",
+        "To sum up, we agreed on the Ha Long Bay case study with a small survey. I'll do the slides and interviews, you'll do the data analysis, we'll split Ana's script, and our draft deadline is still Friday, 17 May."
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "case study",
+    "in my opinion",
+    "I see your point",
+    "compromise",
+    "survey",
+    "data analysis",
+    "divide the tasks",
+    "draft",
+    "deadline",
+    "take over",
+    "split",
+    "to sum up"
+  ],
+  "limits": { "maxTurns": 30, "maxMinutes": 25, "maxReplays": 10, "maxHints": 6, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}

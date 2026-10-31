@@ -1,0 +1,31 @@
+{
+  "name": "english-city-simulator",
+  "private": true,
+  "version": "1.0.0",
+  "description": "English City Simulator – AI English speaking game (K26 Game 1)",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test:unit": "npm run test --workspace @ecs/shared && npm run test:unit --workspace @ecs/api",
+    "test:integration": "firebase emulators:exec --only firestore,auth --project demo-ecs \"npm run test:integration --workspace @ecs/api && npm run test:rules --workspace @ecs/api\"",
+    "test": "npm run test:unit && npm run test:integration",
+    "build": "npm run build --workspace @ecs/web && npm run build --workspace @ecs/api",
+    "emulators": "firebase emulators:start --only firestore,auth --project demo-ecs",
+    "seed:local": "tsx scripts/seed.ts --local",
+    "dev:api": "npm run dev --workspace @ecs/api",
+    "dev:web": "npm run dev --workspace @ecs/web",
+    "test:e2e": "playwright test -c tests/e2e/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "firebase-tools": "14.27.0",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}

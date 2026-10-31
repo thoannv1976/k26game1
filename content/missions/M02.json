@@ -1,0 +1,232 @@
+{
+  "id": "M02",
+  "locationId": "airport",
+  "level": "B1",
+  "title": { "en": "Lost Luggage", "vi": "Hành lý thất lạc" },
+  "summary": {
+    "en": "Your suitcase did not arrive. Report it at the help desk, give the right information and agree on a solution.",
+    "vi": "Vali của bạn không đến. Hãy báo tại quầy hỗ trợ, cung cấp đúng thông tin và thống nhất cách giải quyết."
+  },
+  "briefing": {
+    "en": "You have just arrived at an international airport in London after a long flight from Ho Chi Minh City. You waited at baggage claim, but your suitcase never came out. Go to the baggage help desk, explain the problem and give the information on your card exactly. Be ready for unexpected news and make sure you know how and when you will get your bag back.",
+    "vi": "Bạn vừa đến một sân bay quốc tế ở London sau chuyến bay dài từ TP. Hồ Chí Minh. Bạn đã chờ ở băng chuyền hành lý nhưng vali của bạn không xuất hiện. Hãy đến quầy hỗ trợ hành lý, giải thích vấn đề và cung cấp chính xác thông tin trên thẻ của bạn. Hãy sẵn sàng cho tin bất ngờ và đảm bảo bạn biết khi nào và bằng cách nào mình sẽ nhận lại vali."
+  },
+  "goals": [
+    { "en": "Explain that your luggage is missing and ask for help", "vi": "Giải thích rằng hành lý bị thất lạc và nhờ giúp đỡ" },
+    { "en": "Give your flight, arrival time, bag description, tag number and contact details", "vi": "Cung cấp số hiệu chuyến bay, giờ đến, mô tả vali, số thẻ hành lý và thông tin liên lạc" },
+    { "en": "Ask follow-up questions and request a solution", "vi": "Đặt câu hỏi thêm và yêu cầu hướng giải quyết" },
+    { "en": "Give a delivery address and confirm the solution", "vi": "Cung cấp địa chỉ giao hàng và xác nhận cách giải quyết" },
+    { "en": "Ask when the bag will arrive and close politely", "vi": "Hỏi khi nào vali đến và kết thúc lịch sự" }
+  ],
+  "estimatedMinutes": 15,
+  "xpReward": 120,
+  "studentCard": [
+    { "label": "Name", "value": "Nguyen Minh Anh" },
+    { "label": "Flight", "value": "Silverwing Air SW 215 from Ho Chi Minh City to London" },
+    { "label": "Arrival time", "value": "6:40 am" },
+    { "label": "Bag description", "value": "Large dark blue suitcase, hard shell, red ribbon on the handle" },
+    { "label": "Baggage tag number", "value": "SW 482913" },
+    { "label": "Phone", "value": "+44 7700 900123" },
+    { "label": "Email", "value": "minhanh.nguyen@student-mail.edu" },
+    { "label": "Address in London", "value": "Riverside Student Residence, 25 Elmwood Road, London" }
+  ],
+  "npc": {
+    "name": "Daniel Hughes",
+    "role": "Baggage services agent",
+    "avatar": "baggage-agent",
+    "voice": { "languageCode": "en-GB", "name": "en-GB-Neural2-B" },
+    "personality": "Calm, polite and helpful. He uses simple sentences, asks one question at a time and apologises for the problem.",
+    "openingLine": "Hello, this is the baggage help desk. How can I help you?",
+    "closingLine": "You're welcome. Sorry again for the trouble, and enjoy your stay in London."
+  },
+  "npcFacts": [
+    "The student's bag (tag SW 482913) was loaded by mistake onto flight SW 560 to Bangkok instead of SW 215 to London.",
+    "The bag is now safe at Bangkok airport.",
+    "The bag will be sent back on flight SW 561 tonight and will land in London at 7:15 am tomorrow.",
+    "The airline will deliver the bag to the student's address free of charge by 2 pm tomorrow.",
+    "The courier will send a text message one hour before delivery.",
+    "The file reference number for this case is WP-7734.",
+    "The student can buy essential items up to 50 pounds and keep the receipts to get the money back."
+  ],
+  "stages": [
+    {
+      "id": "asking_for_help",
+      "title": "Asking for Help",
+      "npcGoal": "Greet the student and ask what the problem is. Listen to the explanation, show sympathy and say you will help.",
+      "fallbackLine": "Hello, how can I help you? Is there a problem with your luggage?",
+      "objectives": [
+        {
+          "id": "explain_problem",
+          "description": "Student explains that their luggage/suitcase did not arrive or is missing at baggage claim.",
+          "label": { "en": "Explain the problem", "vi": "Giải thích vấn đề" },
+          "required": true,
+          "evidenceKeywords": ["missing", "lost", "didn't arrive", "did not arrive", "can't find", "never came"]
+        },
+        {
+          "id": "ask_for_help",
+          "description": "Student politely asks the agent for help to find the bag.",
+          "label": { "en": "Ask for help", "vi": "Nhờ giúp đỡ" },
+          "required": true,
+          "evidenceKeywords": ["help me", "could you help", "can you help", "what should i do"]
+        }
+      ],
+      "hints": [
+        "Try: 'Excuse me, my suitcase didn't arrive.'",
+        "Try: 'I waited at baggage claim, but my bag is missing.'",
+        "Try: 'Could you help me, please?'"
+      ],
+      "sampleStudentLines": [
+        "Excuse me, my luggage didn't arrive. I waited at the belt for an hour, but my suitcase is missing.",
+        "Could you help me find it, please?"
+      ]
+    },
+    {
+      "id": "providing_information",
+      "title": "Providing Information",
+      "npcGoal": "Ask, one question at a time, for the flight number, arrival time, a description of the bag, the baggage tag number and contact details (phone or email). Repeat important details back to check them, and ask again if anything is unclear or does not match.",
+      "fallbackLine": "I'm sorry to hear that. Let me make a report. What was your flight number, and what time did you arrive?",
+      "objectives": [
+        {
+          "id": "give_flight_number",
+          "description": "Student gives the flight number SW 215 (from Ho Chi Minh City) exactly as on the card.",
+          "label": { "en": "Give flight number", "vi": "Nói số hiệu chuyến bay" },
+          "required": true,
+          "evidenceKeywords": ["sw 215", "215", "two one five", "2 1 5"]
+        },
+        {
+          "id": "give_arrival_time",
+          "description": "Student gives the arrival time 6:40 am.",
+          "label": { "en": "Give arrival time", "vi": "Nói giờ đến" },
+          "required": true,
+          "evidenceKeywords": ["6 40", "six forty", "landed"]
+        },
+        {
+          "id": "describe_bag",
+          "description": "Student describes the bag with details from the card: large, dark blue, hard shell, red ribbon on the handle.",
+          "label": { "en": "Describe your bag", "vi": "Mô tả vali" },
+          "required": true,
+          "evidenceKeywords": ["blue", "dark blue", "hard shell", "red ribbon", "ribbon"]
+        },
+        {
+          "id": "give_tag_number",
+          "description": "Student gives the baggage tag number SW 482913 exactly.",
+          "label": { "en": "Give tag number", "vi": "Đọc số thẻ hành lý" },
+          "required": true,
+          "evidenceKeywords": ["482913", "sw 482913", "4 8 2 9 1 3", "tag number"]
+        },
+        {
+          "id": "give_contact",
+          "description": "Student gives contact details: phone number +44 7700 900123 and/or email minhanh.nguyen@student-mail.edu.",
+          "label": { "en": "Give contact details", "vi": "Cho thông tin liên lạc" },
+          "required": true,
+          "evidenceKeywords": ["7700", "900123", "phone number", "email", "student mail"]
+        }
+      ],
+      "hints": [
+        "Try: 'My flight number is SW 215 from Ho Chi Minh City.'",
+        "Try: 'It's a large dark blue suitcase with a red ribbon on the handle.'",
+        "Read numbers slowly, one digit at a time."
+      ],
+      "sampleStudentLines": [
+        "My flight number is SW 215 from Ho Chi Minh City, and we landed at 6:40 this morning.",
+        "It's a large dark blue suitcase with a hard shell and a red ribbon on the handle.",
+        "The baggage tag number is SW 482913.",
+        "My phone number is +44 7700 900123, and my email is minhanh.nguyen@student-mail.edu."
+      ]
+    },
+    {
+      "id": "unexpected_situation",
+      "title": "Unexpected Situation",
+      "npcGoal": "Explain the news about the bag in simple words. Answer the student's follow-up questions using only the facts, wait for the student to ask what can be done, then offer free delivery and ask for a delivery address.",
+      "twist": "After checking the computer, tell the student that their bag was put on the wrong flight by mistake: it went on flight SW 560 to Bangkok. Say the bag is safe. Do not offer a solution until the student asks a follow-up question or asks what can be done.",
+      "fallbackLine": "I've checked the system. I'm very sorry, but your bag was put on the wrong flight by mistake. It went to Bangkok.",
+      "objectives": [
+        {
+          "id": "ask_follow_up",
+          "description": "Student asks a follow-up question about the situation, e.g. why it happened, where the bag is now, whether it is safe, or which flight it is on.",
+          "label": { "en": "Ask follow-up questions", "vi": "Hỏi thêm thông tin" },
+          "required": true,
+          "evidenceKeywords": ["why", "how did", "where is it", "bangkok", "which flight", "is it safe"]
+        },
+        {
+          "id": "request_solution",
+          "description": "Student asks what the airline can do or requests a solution, such as sending or delivering the bag to them.",
+          "label": { "en": "Ask for a solution", "vi": "Yêu cầu cách giải quyết" },
+          "required": true,
+          "evidenceKeywords": ["what can you do", "solution", "send it", "deliver", "bring it"]
+        },
+        {
+          "id": "give_delivery_address",
+          "description": "Student gives the delivery address: Riverside Student Residence, 25 Elmwood Road, London.",
+          "label": { "en": "Give delivery address", "vi": "Cho địa chỉ giao hàng" },
+          "required": true,
+          "evidenceKeywords": ["elmwood", "25 elmwood road", "riverside", "student residence"]
+        }
+      ],
+      "hints": [
+        "Try: 'Why did that happen? Where is my bag now?'",
+        "Try: 'What can you do to solve this problem?'",
+        "Try: 'Could you deliver it to my address?'"
+      ],
+      "sampleStudentLines": [
+        "Oh no, why did that happen? Is my bag safe in Bangkok now?",
+        "What can you do to solve this problem? Could you send it to me?",
+        "Please deliver it to Riverside Student Residence, 25 Elmwood Road, London."
+      ]
+    },
+    {
+      "id": "completing_mission",
+      "title": "Completing the Mission",
+      "npcGoal": "Summarise the solution (free delivery by 2 pm tomorrow, text message one hour before) and give the reference number. Let the student confirm, answer when the bag will arrive, and say goodbye politely.",
+      "fallbackLine": "So, we will deliver your bag to your address free of charge. Is that okay for you?",
+      "objectives": [
+        {
+          "id": "confirm_solution",
+          "description": "Student confirms or repeats the agreed solution (free delivery of the bag to their address).",
+          "label": { "en": "Confirm the solution", "vi": "Xác nhận cách giải quyết" },
+          "required": true,
+          "evidenceKeywords": ["let me confirm", "so you will", "that works", "free of charge", "confirm"]
+        },
+        {
+          "id": "ask_arrival",
+          "description": "Student asks when the bag will arrive or be delivered.",
+          "label": { "en": "Ask when it will arrive", "vi": "Hỏi khi nào vali đến" },
+          "required": true,
+          "evidenceKeywords": ["when will", "what time", "how long"]
+        },
+        {
+          "id": "close_politely",
+          "description": "Student thanks the agent and ends the conversation politely.",
+          "label": { "en": "Close politely", "vi": "Kết thúc lịch sự" },
+          "required": true,
+          "evidenceKeywords": ["thank you for your help", "thanks for your help", "goodbye", "have a good day", "appreciate"]
+        }
+      ],
+      "hints": [
+        "Try: 'So you will deliver my bag for free. Is that right?'",
+        "Try: 'When will it arrive?'",
+        "Try: 'Thank you for your help. Goodbye.'"
+      ],
+      "sampleStudentLines": [
+        "So you will bring my bag to my residence free of charge. Let me confirm that.",
+        "When will it arrive at my residence?",
+        "Thank you for your help. Have a good day!"
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "baggage claim",
+    "luggage",
+    "missing",
+    "flight number",
+    "baggage tag",
+    "hard-shell suitcase",
+    "contact details",
+    "by mistake",
+    "deliver",
+    "free of charge",
+    "reference number"
+  ],
+  "limits": { "maxTurns": 24, "maxMinutes": 20, "maxReplays": 10, "maxHints": 5, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}

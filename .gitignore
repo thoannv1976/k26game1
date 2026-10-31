@@ -12,3 +12,8 @@ ui-debug.log*
 *-key.json
 service-account*.json
 .DS_Store
+.data/
+test-results/
+playwright-report/
+apps/api/dist/
+apps/web/dist/

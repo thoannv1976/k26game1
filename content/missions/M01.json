@@ -1,0 +1,184 @@
+{
+  "id": "M01",
+  "locationId": "airport",
+  "level": "B1",
+  "title": { "en": "Airport Check-in", "vi": "Làm thủ tục tại sân bay" },
+  "summary": {
+    "en": "Check in for an international flight, solve a baggage problem and get your seat and boarding information.",
+    "vi": "Làm thủ tục cho chuyến bay quốc tế, xử lý vấn đề hành lý và hỏi thông tin chỗ ngồi, giờ lên máy bay."
+  },
+  "briefing": {
+    "en": "You are at the airport in Hanoi, flying to Singapore for a two-week student exchange programme. Go to the Silverwing Air check-in counter, show your documents and check in your suitcase. Listen carefully: there may be a problem with your bag, and you only have a small budget for extra costs.",
+    "vi": "Bạn đang ở sân bay Hà Nội để bay sang Singapore tham gia chương trình trao đổi sinh viên hai tuần. Hãy đến quầy làm thủ tục của hãng Silverwing Air, xuất trình giấy tờ và gửi vali. Hãy lắng nghe kỹ: hành lý của bạn có thể gặp vấn đề, và bạn chỉ có một khoản tiền nhỏ cho chi phí phát sinh."
+  },
+  "goals": [
+    { "en": "Give your destination, passport and booking reference", "vi": "Nói điểm đến, đưa hộ chiếu và mã đặt chỗ" },
+    { "en": "Answer the agent's questions about your bag", "vi": "Trả lời câu hỏi của nhân viên về hành lý" },
+    { "en": "Ask about the extra fee and solve the overweight problem", "vi": "Hỏi về phí phát sinh và giải quyết việc hành lý quá cân" },
+    { "en": "Request a seat and ask for boarding time and gate", "vi": "Yêu cầu chỗ ngồi và hỏi giờ lên máy bay, cửa ra máy bay" }
+  ],
+  "estimatedMinutes": 12,
+  "xpReward": 100,
+  "studentCard": [
+    { "label": "Passenger", "value": "Pham Thu Ha" },
+    { "label": "Flight", "value": "Silverwing Air SW 172, Hanoi to Singapore, departs 10:35" },
+    { "label": "Booking reference", "value": "BX4729" },
+    { "label": "Documents", "value": "Passport and e-ticket" },
+    { "label": "Checked bag", "value": "1 suitcase, packed by yourself, no batteries inside" },
+    { "label": "Hand luggage", "value": "1 backpack, 4 kg" },
+    { "label": "Money for extra costs", "value": "Maximum 20 USD" },
+    { "label": "Seat preference", "value": "Window seat near the front" }
+  ],
+  "npc": {
+    "name": "Olivia Bennett",
+    "role": "Check-in agent, Silverwing Air",
+    "avatar": "airport-agent",
+    "voice": { "languageCode": "en-US", "name": "en-US-Neural2-F" },
+    "personality": "Friendly, efficient and patient. She speaks clearly in short, simple sentences and repeats information when asked.",
+    "openingLine": "Good morning! Welcome to Silverwing Air. Where are you flying to today?",
+    "closingLine": "You're all checked in. Here is your boarding pass. Have a great trip to Singapore!"
+  },
+  "npcFacts": [
+    "Booking BX4729 is confirmed for Pham Thu Ha on flight SW 172 from Hanoi to Singapore, departing at 10:35.",
+    "The checked baggage allowance is 23 kg. The student's suitcase weighs 26 kg, so it is 3 kg over the limit.",
+    "Extra baggage costs 15 USD per kilogram, so 3 kg extra costs 45 USD.",
+    "The hand luggage limit is 7 kg. The student's backpack weighs 4 kg, so 3 kg can be moved into it, which solves the problem for free.",
+    "Batteries and power banks must not be in the checked bag.",
+    "Window seat 14A near the front is available.",
+    "Boarding starts at 9:50 at Gate 12. The gate closes at 10:15."
+  ],
+  "stages": [
+    {
+      "id": "documents",
+      "title": "Showing Your Documents",
+      "npcGoal": "Greet the student and ask where they are flying. Ask for their passport and booking reference, then check that the booking is correct.",
+      "fallbackLine": "Where are you flying to today? May I see your passport and your booking reference, please?",
+      "objectives": [
+        {
+          "id": "state_destination",
+          "description": "Student says where they are flying (Singapore) or which flight they are checking in for.",
+          "label": { "en": "Say your destination", "vi": "Nói điểm đến" },
+          "required": true,
+          "evidenceKeywords": ["singapore", "sw 172", "172", "flying to"]
+        },
+        {
+          "id": "show_passport",
+          "description": "Student offers or mentions their passport when the agent asks for documents.",
+          "label": { "en": "Show your passport", "vi": "Đưa hộ chiếu" },
+          "required": true,
+          "evidenceKeywords": ["passport", "here is my passport", "my passport"]
+        },
+        {
+          "id": "give_booking_ref",
+          "description": "Student gives the booking reference BX4729 correctly (letters and numbers may be spoken separately).",
+          "label": { "en": "Give booking reference", "vi": "Đọc mã đặt chỗ" },
+          "required": true,
+          "evidenceKeywords": ["bx4729", "bx 4729", "4729", "b x 4 7 2 9"]
+        }
+      ],
+      "hints": [
+        "Try: 'I'm flying to Singapore on flight SW 172.'",
+        "Try: 'Here is my passport. My booking reference is…'",
+        "Spell letters clearly: 'B for Bravo, X for X-ray…'"
+      ],
+      "sampleStudentLines": [
+        "Good morning. I'd like to check in for flight SW 172 to Singapore.",
+        "Here is my passport, and my booking reference is BX4729."
+      ]
+    },
+    {
+      "id": "baggage",
+      "title": "Checking Your Bag",
+      "npcGoal": "Ask the student to put the suitcase on the scale and ask whether they packed it themselves and whether there are batteries inside. Then explain the weight problem and the extra fee, and help the student choose a solution.",
+      "twist": "When the bag is weighed, tell the student it is 26 kg, which is 3 kg over the 23 kg allowance. Explain simply that the extra fee is 15 USD per kilogram (45 USD in total) unless they move some items into their hand luggage. Do not suggest the solution immediately; wait for the student to ask about the fee or the options.",
+      "fallbackLine": "Please put your suitcase on the scale. Did you pack it yourself? Oh, I'm sorry, it's 26 kilos. The limit is 23 kilos, so it's 3 kilos over.",
+      "objectives": [
+        {
+          "id": "answer_packing",
+          "description": "Student answers the security questions: they packed the bag themselves and/or there are no batteries inside.",
+          "label": { "en": "Answer bag questions", "vi": "Trả lời câu hỏi về hành lý" },
+          "required": true,
+          "evidenceKeywords": ["packed it myself", "myself", "no batteries", "by myself"]
+        },
+        {
+          "id": "ask_extra_fee",
+          "description": "Student asks how much the extra baggage fee is or what options they have.",
+          "label": { "en": "Ask about the extra fee", "vi": "Hỏi về phí quá cân" },
+          "required": true,
+          "evidenceKeywords": ["how much", "extra fee", "options", "pay extra", "extra charge"]
+        },
+        {
+          "id": "solve_overweight",
+          "description": "Student proposes or accepts a solution that fits their budget, such as moving items from the suitcase into the backpack/hand luggage.",
+          "label": { "en": "Solve the weight problem", "vi": "Giải quyết hành lý quá cân" },
+          "required": true,
+          "evidenceKeywords": ["take out", "backpack", "hand luggage", "carry on", "move some"]
+        }
+      ],
+      "hints": [
+        "Try: 'Yes, I packed it myself.'",
+        "Try: 'How much is the extra fee?'",
+        "Try: 'Can I take some things out and put them in my backpack?'"
+      ],
+      "sampleStudentLines": [
+        "Yes, I packed it myself, and there are no batteries in it.",
+        "Oh no. How much is the extra fee?",
+        "That's too expensive for me. Can I take out some things and put them in my backpack?"
+      ]
+    },
+    {
+      "id": "seat_boarding",
+      "title": "Seat and Boarding Information",
+      "npcGoal": "Ask the student if they have a seat preference and offer seat 14A if they ask for a window. Answer questions about boarding time and gate using the facts, then give the boarding pass.",
+      "fallbackLine": "Your bag is fine now. Do you have a seat preference?",
+      "objectives": [
+        {
+          "id": "request_seat",
+          "description": "Student asks for a window seat (near the front) as on their card.",
+          "label": { "en": "Ask for a window seat", "vi": "Xin ghế cạnh cửa sổ" },
+          "required": true,
+          "evidenceKeywords": ["window seat", "window", "near the front"]
+        },
+        {
+          "id": "ask_boarding_info",
+          "description": "Student asks what time boarding starts and/or which gate to go to.",
+          "label": { "en": "Ask boarding time and gate", "vi": "Hỏi giờ và cửa lên máy bay" },
+          "required": true,
+          "evidenceKeywords": ["boarding", "gate", "what time"]
+        },
+        {
+          "id": "close_politely",
+          "description": "Student thanks the agent and ends the conversation politely.",
+          "label": { "en": "Say goodbye politely", "vi": "Chào tạm biệt lịch sự" },
+          "required": false,
+          "evidenceKeywords": ["thank you for your help", "thanks for your help", "goodbye", "have a good day"]
+        }
+      ],
+      "hints": [
+        "Try: 'Could I have a window seat, please?'",
+        "Try: 'What time does boarding start?'",
+        "Try: 'Which gate should I go to?'"
+      ],
+      "sampleStudentLines": [
+        "Could I have a window seat near the front, please?",
+        "What time does boarding start, and which gate should I go to?",
+        "Great, thank you for your help. Goodbye!"
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "check in",
+    "booking reference",
+    "passport",
+    "baggage allowance",
+    "overweight",
+    "extra fee",
+    "hand luggage",
+    "scale",
+    "window seat",
+    "boarding pass",
+    "gate"
+  ],
+  "limits": { "maxTurns": 24, "maxMinutes": 20, "maxReplays": 10, "maxHints": 5, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}

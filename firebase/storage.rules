@@ -1,0 +1,9 @@
+rules_version = '2';
+// Student audio and TTS cache are served only through the backend API.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

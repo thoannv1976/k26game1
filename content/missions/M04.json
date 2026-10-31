@@ -1,0 +1,208 @@
+{
+  "id": "M04",
+  "locationId": "restaurant",
+  "level": "B2",
+  "title": { "en": "Handling a Wrong Bill", "vi": "Xử lý hóa đơn bị sai" },
+  "summary": {
+    "en": "Your bill has extra items and the wrong discount. Complain politely, explain the mistakes, negotiate and confirm the corrected total.",
+    "vi": "Hóa đơn của bạn có món không gọi và tính sai giảm giá. Hãy khiếu nại lịch sự, giải thích lỗi, thương lượng và xác nhận tổng tiền đúng."
+  },
+  "briefing": {
+    "en": "You have just finished a Saturday dinner with two classmates at Lantern Lane Restaurant. When the bill arrives, it shows £57.00, but you are sure it should be much less: there are items you did not order and the student discount looks wrong. Ask to speak to the manager, explain the problem clearly and politely, and do not pay until the total is correct.",
+    "vi": "Bạn vừa ăn tối thứ Bảy cùng hai người bạn cùng lớp tại nhà hàng Lantern Lane. Khi nhận hóa đơn, tổng tiền là 57 bảng, nhưng bạn chắc chắn phải ít hơn nhiều: có những món bạn không gọi và mức giảm giá cho sinh viên có vẻ sai. Hãy xin gặp quản lý, giải thích vấn đề rõ ràng, lịch sự và đừng thanh toán cho đến khi tổng tiền chính xác."
+  },
+  "goals": [
+    { "en": "Politely say that there is a problem with the bill", "vi": "Lịch sự nói rằng hóa đơn có vấn đề" },
+    { "en": "Explain each mistake clearly with details", "vi": "Giải thích rõ ràng từng lỗi kèm chi tiết" },
+    { "en": "Argue your case with evidence when the manager disagrees", "vi": "Đưa ra lập luận và bằng chứng khi quản lý không đồng ý" },
+    { "en": "Negotiate a corrected bill and confirm the right total", "vi": "Thương lượng để sửa hóa đơn và xác nhận tổng tiền đúng" }
+  ],
+  "estimatedMinutes": 18,
+  "xpReward": 160,
+  "studentCard": [
+    { "label": "Party", "value": "You and two classmates (3 people), table 8, Saturday evening" },
+    { "label": "What you ordered", "value": "2 seafood pasta (£14 each), 1 garden salad (£10), 3 iced teas (£4 each)" },
+    { "label": "Correct subtotal", "value": "£50.00" },
+    { "label": "Menu note", "value": "\"10% student discount every day with a valid student ID\"" },
+    { "label": "Student IDs", "value": "All three of you showed your student IDs when you ordered" },
+    { "label": "Correct total", "value": "£45.00 (after 10% discount)" },
+    { "label": "Bill you received", "value": "£57.00: includes 4 iced teas, 1 chocolate cake (£6) and a 5% discount" },
+    { "label": "Payment", "value": "By card" }
+  ],
+  "npc": {
+    "name": "Grace Whitmore",
+    "role": "Restaurant manager, Lantern Lane Restaurant",
+    "avatar": "restaurant-manager",
+    "voice": { "languageCode": "en-GB", "name": "en-GB-Neural2-C" },
+    "personality": "Professional and polite but busy; she defends restaurant policy at first and only changes her mind when the customer gives clear reasons. She speaks naturally at B2 level and expects detailed explanations.",
+    "openingLine": "Good evening, I'm Grace, the manager. I understand there's a question about your bill?",
+    "closingLine": "Thank you for your patience, and again, my apologies. We hope to see you back at Lantern Lane soon."
+  },
+  "npcFacts": [
+    "The bill for table 8 shows: 2 seafood pasta £28, 1 garden salad £10, 4 iced teas £16, 1 chocolate cake £6; subtotal £60; 5% discount −£3; total £57.00.",
+    "The chocolate cake belongs to table 9; the waiter added it to table 8 by mistake.",
+    "The waiter entered one iced tea twice, so the bill shows 4 instead of 3.",
+    "The till applied the 5% 'weekend family' discount instead of the 10% student discount.",
+    "The manager first believes the student discount is only for Monday to Friday (this was last year's policy).",
+    "The current menu, printed this month, says '10% student discount every day with a valid student ID'; once the student points this out, the manager checks and agrees.",
+    "The corrected bill is £50.00 minus 10% (£5.00) = £45.00.",
+    "As an apology, the manager can offer a free dessert voucher for the next visit, but only if the student is polite and asks for a fair solution."
+  ],
+  "stages": [
+    {
+      "id": "raising_issue",
+      "title": "Raising the Issue",
+      "npcGoal": "Introduce yourself as the manager and ask what the problem is. Respond politely but neutrally; ask the student to explain exactly what seems wrong.",
+      "fallbackLine": "Good evening, I'm the manager. Is there something wrong with your bill?",
+      "objectives": [
+        {
+          "id": "raise_problem",
+          "description": "Student politely says there seems to be a problem or mistake with the bill (using softening language, not rude accusations).",
+          "label": { "en": "Raise the problem politely", "vi": "Nêu vấn đề lịch sự" },
+          "required": true,
+          "evidenceKeywords": ["problem with the bill", "mistake", "doesn t look right", "something wrong", "seems to be"]
+        },
+        {
+          "id": "state_total_issue",
+          "description": "Student explains that the total on the bill (£57) is higher than it should be.",
+          "label": { "en": "Say the total is too high", "vi": "Nói tổng tiền quá cao" },
+          "required": true,
+          "evidenceKeywords": ["57", "too high", "higher than", "more than we expected", "overcharged"]
+        }
+      ],
+      "hints": [
+        "Try: 'I'm sorry to bother you, but I think there's a mistake on our bill.'",
+        "Try: 'The total is £57, which seems much higher than it should be.'"
+      ],
+      "sampleStudentLines": [
+        "Good evening. I'm sorry to bother you, but I think there's a mistake on our bill.",
+        "The total says £57, which is much higher than we expected for what we had."
+      ]
+    },
+    {
+      "id": "explaining_mistakes",
+      "title": "Explaining the Mistakes",
+      "npcGoal": "Ask the student to go through the bill item by item. Ask follow-up questions to check details (how many drinks, who ordered the cake) and do not accept a vague complaint.",
+      "fallbackLine": "Could you show me which items you think are wrong?",
+      "objectives": [
+        {
+          "id": "point_out_cake",
+          "description": "Student explains that the chocolate cake (£6) was never ordered by their table.",
+          "label": { "en": "Point out the cake", "vi": "Chỉ ra món bánh không gọi" },
+          "required": true,
+          "evidenceKeywords": ["chocolate cake", "cake", "dessert", "didn t order"]
+        },
+        {
+          "id": "point_out_drinks",
+          "description": "Student explains that they had three iced teas, not four.",
+          "label": { "en": "Point out the extra drink", "vi": "Chỉ ra đồ uống bị thừa" },
+          "required": true,
+          "evidenceKeywords": ["three iced teas", "only three", "four iced teas", "iced tea", "3 iced teas"]
+        },
+        {
+          "id": "point_out_discount",
+          "description": "Student explains that the discount should be the 10% student discount, not 5%.",
+          "label": { "en": "Point out the discount", "vi": "Chỉ ra lỗi giảm giá" },
+          "required": true,
+          "evidenceKeywords": ["ten percent", "10 percent", "student discount", "discount", "five percent", "5 percent"]
+        }
+      ],
+      "hints": [
+        "Try: 'First of all, we didn't order a chocolate cake.'",
+        "Try: 'We had three iced teas, but the bill shows four.'",
+        "Try: 'Also, we should get the 10% student discount, not 5%.'"
+      ],
+      "sampleStudentLines": [
+        "First of all, we didn't order a chocolate cake. None of us had dessert.",
+        "Secondly, we only had three iced teas, but the bill shows four.",
+        "And finally, we should get the 10% student discount, not 5%."
+      ]
+    },
+    {
+      "id": "negotiating",
+      "title": "Negotiating",
+      "npcGoal": "Agree to remove the cake and the extra iced tea, but defend the weekday-only discount policy. Only accept the 10% discount when the student gives clear evidence (the menu note and the student IDs) and asks for a corrected bill.",
+      "twist": "Say you will remove the cake and the extra iced tea, but claim politely that the 10% student discount is only valid Monday to Friday, so on Saturday they can only have the 5% weekend discount. Hold this position until the student refers to the menu note or their student IDs and asks you to correct the bill.",
+      "fallbackLine": "I'll remove the cake and the extra iced tea. However, I'm afraid the student discount is only valid from Monday to Friday, so today you get the weekend discount of 5%.",
+      "objectives": [
+        {
+          "id": "challenge_policy",
+          "description": "Student politely disagrees with the manager and refers to evidence: the menu says the 10% student discount applies every day.",
+          "label": { "en": "Challenge the policy", "vi": "Phản biện quy định" },
+          "required": true,
+          "evidenceKeywords": ["menu says", "every day", "on the menu", "it says", "printed"]
+        },
+        {
+          "id": "mention_student_ids",
+          "description": "Student mentions that they all showed valid student IDs when ordering.",
+          "label": { "en": "Mention your student IDs", "vi": "Nhắc đến thẻ sinh viên" },
+          "required": true,
+          "evidenceKeywords": ["student id", "student ids", "student card", "showed"]
+        },
+        {
+          "id": "request_correction",
+          "description": "Student clearly asks for a corrected/recalculated bill or proposes a fair solution.",
+          "label": { "en": "Ask for a corrected bill", "vi": "Yêu cầu sửa hóa đơn" },
+          "required": true,
+          "evidenceKeywords": ["corrected bill", "new bill", "recalculate", "correct the bill", "fair"]
+        }
+      ],
+      "hints": [
+        "Try: 'I understand, but the menu says the discount applies every day.'",
+        "Try: 'We all showed our student IDs when we ordered.'",
+        "Try: 'Would it be possible to recalculate the bill?'"
+      ],
+      "sampleStudentLines": [
+        "I understand your point, but with respect, the menu says the student discount applies every day.",
+        "We all showed our student IDs when we ordered, so I think we should get the full discount.",
+        "Would it be possible to recalculate the bill so that it's fair?"
+      ]
+    },
+    {
+      "id": "confirming_total",
+      "title": "Confirming the Total",
+      "npcGoal": "Apologise, accept the student's argument and explain the corrected calculation if asked. Let the student confirm the new total and pay, and offer the dessert voucher if they have been polite.",
+      "fallbackLine": "You're quite right, the new menu does say every day. My apologies. I've corrected the bill for you.",
+      "objectives": [
+        {
+          "id": "confirm_total",
+          "description": "Student checks and confirms the corrected total of £45.00 (subtotal £50 minus 10%).",
+          "label": { "en": "Confirm the new total", "vi": "Xác nhận tổng tiền mới" },
+          "required": true,
+          "evidenceKeywords": ["45", "forty five", "50 minus", "new total"]
+        },
+        {
+          "id": "pay_and_close",
+          "description": "Student agrees to pay (by card) and ends the conversation politely, e.g. thanking the manager for sorting it out.",
+          "label": { "en": "Pay and close politely", "vi": "Thanh toán và kết thúc lịch sự" },
+          "required": true,
+          "evidenceKeywords": ["by card", "pay", "sorting this out", "appreciate", "thanks for your help"]
+        }
+      ],
+      "hints": [
+        "Try: 'So the new total is £45. Is that correct?'",
+        "Try: 'Great, I'll pay by card. I really appreciate your help.'"
+      ],
+      "sampleStudentLines": [
+        "Thank you. So the new total is £45, which is 50 minus 10 percent. Is that correct?",
+        "Great, I'll pay by card. I really appreciate you sorting this out."
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "bill",
+    "overcharge",
+    "item",
+    "subtotal",
+    "discount",
+    "apply",
+    "policy",
+    "valid",
+    "recalculate",
+    "corrected total",
+    "apologise",
+    "sort out"
+  ],
+  "limits": { "maxTurns": 28, "maxMinutes": 25, "maxReplays": 10, "maxHints": 6, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}

@@ -1,0 +1,194 @@
+{
+  "id": "M03",
+  "locationId": "restaurant",
+  "level": "B1",
+  "title": { "en": "Ordering Food", "vi": "Gọi món ăn" },
+  "summary": {
+    "en": "Order dinner for you and a friend, deal with a dish that is not available and check for allergies.",
+    "vi": "Gọi bữa tối cho bạn và một người bạn, xử lý khi món ăn hết và hỏi về chất gây dị ứng."
+  },
+  "briefing": {
+    "en": "You and a friend are having dinner at Maple Corner Bistro, where you booked a table. Order drinks and food for both of you using the information on your card. Be careful: you have a serious peanut allergy, so check the ingredients if you need to choose a different dish.",
+    "vi": "Bạn và một người bạn đi ăn tối ở nhà hàng Maple Corner Bistro, nơi bạn đã đặt bàn trước. Hãy gọi đồ uống và món ăn cho cả hai người theo thông tin trên thẻ. Hãy cẩn thận: bạn bị dị ứng đậu phộng nặng, vì vậy hãy hỏi kỹ thành phần nếu phải chọn món khác."
+  },
+  "goals": [
+    { "en": "Give your reservation and order drinks", "vi": "Báo tên đặt bàn và gọi đồ uống" },
+    { "en": "Order main dishes for you and your friend", "vi": "Gọi món chính cho bạn và bạn của bạn" },
+    { "en": "Ask for a recommendation and check for peanuts", "vi": "Hỏi gợi ý món và kiểm tra có đậu phộng không" },
+    { "en": "Confirm the order and ask about waiting time", "vi": "Xác nhận lại món đã gọi và hỏi thời gian chờ" }
+  ],
+  "estimatedMinutes": 12,
+  "xpReward": 110,
+  "studentCard": [
+    { "label": "Reservation", "value": "Table for two under the name Vu, 7:00 pm" },
+    { "label": "Drinks", "value": "One orange juice (you) and one glass of water (your friend)" },
+    { "label": "Your main dish", "value": "Grilled chicken with rice" },
+    { "label": "Your friend's dish", "value": "Mushroom soup" },
+    { "label": "Allergy", "value": "You are seriously allergic to peanuts" },
+    { "label": "Budget", "value": "About 30 USD for two people" }
+  ],
+  "npc": {
+    "name": "Leo Carter",
+    "role": "Waiter at Maple Corner Bistro",
+    "avatar": "waiter",
+    "voice": { "languageCode": "en-US", "name": "en-US-Neural2-D" },
+    "personality": "Cheerful and polite. He speaks in simple, friendly sentences and takes allergies very seriously.",
+    "openingLine": "Good evening and welcome to Maple Corner Bistro! Do you have a reservation?",
+    "closingLine": "Perfect. Your food will be ready soon. Enjoy your meal!"
+  },
+  "npcFacts": [
+    "There is a reservation for two people under the name Vu at 7:00 pm, table 6 by the window.",
+    "Drinks: orange juice costs 3 USD; tap water is free.",
+    "The grilled chicken with rice (12 USD) is sold out tonight because the kitchen has run out of chicken.",
+    "Alternative 1: beef noodle stir-fry (13 USD). It is cooked with peanut sauce and cannot be made without peanuts.",
+    "Alternative 2: pan-fried salmon with vegetables (14 USD). It contains no nuts.",
+    "Mushroom soup costs 7 USD and contains no nuts.",
+    "Food will be ready in about 15 minutes."
+  ],
+  "stages": [
+    {
+      "id": "arriving",
+      "title": "Arriving and Ordering Drinks",
+      "npcGoal": "Welcome the guests, check the reservation name, show them to their table and ask what they would like to drink.",
+      "fallbackLine": "Welcome! Do you have a reservation? And what would you like to drink?",
+      "objectives": [
+        {
+          "id": "give_reservation",
+          "description": "Student says they have a reservation/table for two under the name Vu.",
+          "label": { "en": "Give your reservation", "vi": "Báo tên đặt bàn" },
+          "required": true,
+          "evidenceKeywords": ["reservation", "table for two", "booked", "under the name", "vu"]
+        },
+        {
+          "id": "order_drinks",
+          "description": "Student orders the drinks on the card: an orange juice and a glass of water.",
+          "label": { "en": "Order drinks", "vi": "Gọi đồ uống" },
+          "required": true,
+          "evidenceKeywords": ["orange juice", "juice", "water", "drink"]
+        }
+      ],
+      "hints": [
+        "Try: 'We have a reservation under the name Vu.'",
+        "Try: 'Can I have an orange juice, please?'"
+      ],
+      "sampleStudentLines": [
+        "Good evening. We have a reservation for two under the name Vu.",
+        "Can I have an orange juice, and a glass of water for my friend?"
+      ]
+    },
+    {
+      "id": "ordering_main",
+      "title": "Ordering the Main Course",
+      "npcGoal": "Bring the drinks and ask what the guests would like to eat. Write down the order for both people and say you will check with the kitchen.",
+      "fallbackLine": "Here are your drinks. Are you ready to order your food?",
+      "objectives": [
+        {
+          "id": "order_main",
+          "description": "Student orders their own main dish from the card: grilled chicken with rice.",
+          "label": { "en": "Order your main dish", "vi": "Gọi món chính của bạn" },
+          "required": true,
+          "evidenceKeywords": ["grilled chicken", "chicken"]
+        },
+        {
+          "id": "order_for_friend",
+          "description": "Student orders for their friend: mushroom soup.",
+          "label": { "en": "Order for your friend", "vi": "Gọi món cho bạn" },
+          "required": true,
+          "evidenceKeywords": ["mushroom soup", "soup", "mushroom"]
+        }
+      ],
+      "hints": [
+        "Try: 'I'd like the grilled chicken with rice, please.'",
+        "Try: 'My friend would like the mushroom soup.'"
+      ],
+      "sampleStudentLines": [
+        "I'd like the grilled chicken with rice, please.",
+        "And my friend would like the mushroom soup."
+      ]
+    },
+    {
+      "id": "dish_unavailable",
+      "title": "A Dish Is Not Available",
+      "npcGoal": "Apologise that the chicken is sold out and wait for the student to ask for a recommendation. Suggest the two alternatives. When the student mentions the peanut allergy, explain clearly which dish contains peanuts and which is safe.",
+      "twist": "Come back from the kitchen and say you are very sorry: the grilled chicken is sold out tonight. Do not mention the allergy problem yourself; let the student ask. If the student does not ask about peanuts before choosing the beef noodle stir-fry, ask whether they have any allergies.",
+      "fallbackLine": "I'm really sorry, but the grilled chicken is sold out tonight. Would you like something else?",
+      "objectives": [
+        {
+          "id": "ask_recommendation",
+          "description": "Student asks the waiter to recommend or suggest another dish.",
+          "label": { "en": "Ask for a recommendation", "vi": "Hỏi gợi ý món khác" },
+          "required": true,
+          "evidenceKeywords": ["recommend", "suggest", "instead", "what else"]
+        },
+        {
+          "id": "mention_allergy",
+          "description": "Student says they are allergic to peanuts or asks whether a dish contains peanuts/nuts.",
+          "label": { "en": "Ask about peanuts", "vi": "Hỏi về đậu phộng" },
+          "required": true,
+          "evidenceKeywords": ["allergic", "allergy", "peanuts", "peanut", "nuts"]
+        },
+        {
+          "id": "choose_alternative",
+          "description": "Student chooses the safe alternative: pan-fried salmon with vegetables.",
+          "label": { "en": "Choose a safe dish", "vi": "Chọn món an toàn" },
+          "required": true,
+          "evidenceKeywords": ["salmon", "fish"]
+        }
+      ],
+      "hints": [
+        "Try: 'What do you recommend instead?'",
+        "Try: 'I'm allergic to peanuts. Does it have nuts in it?'",
+        "Try: 'Then I'll have the… please.'"
+      ],
+      "sampleStudentLines": [
+        "Oh, that's a pity. What do you recommend instead?",
+        "I'm allergic to peanuts. Does the beef noodle stir-fry have nuts in it?",
+        "Then I'll have the salmon with vegetables, please."
+      ]
+    },
+    {
+      "id": "finishing_order",
+      "title": "Finishing the Order",
+      "npcGoal": "Read back the order if asked, confirm that the kitchen knows about the peanut allergy and answer how long the food will take.",
+      "fallbackLine": "Great choice. Is there anything else I can help you with?",
+      "objectives": [
+        {
+          "id": "confirm_order",
+          "description": "Student checks or repeats the final order (salmon, mushroom soup and the drinks) to confirm it is correct.",
+          "label": { "en": "Confirm the order", "vi": "Xác nhận món đã gọi" },
+          "required": true,
+          "evidenceKeywords": ["so that s", "to confirm", "is that right", "let me check", "correct"]
+        },
+        {
+          "id": "ask_wait_time",
+          "description": "Student asks how long the food will take.",
+          "label": { "en": "Ask about waiting time", "vi": "Hỏi thời gian chờ" },
+          "required": true,
+          "evidenceKeywords": ["how long", "how many minutes", "how soon"]
+        }
+      ],
+      "hints": [
+        "Try: 'So that's one salmon and one mushroom soup, right?'",
+        "Try: 'How long will the food take?'"
+      ],
+      "sampleStudentLines": [
+        "So that's one salmon with vegetables and one mushroom soup. Is that right?",
+        "How long will the food take?"
+      ]
+    }
+  ],
+  "targetVocabulary": [
+    "reservation",
+    "order",
+    "main course",
+    "sold out",
+    "recommend",
+    "instead",
+    "allergic to",
+    "ingredients",
+    "contain",
+    "waiting time"
+  ],
+  "limits": { "maxTurns": 24, "maxMinutes": 20, "maxReplays": 10, "maxHints": 5, "maxRecordSeconds": 30 },
+  "rubric": { "taskCompletion": 30, "comprehension": 20, "grammar": 20, "vocabulary": 15, "fluency": 15 }
+}
