@@ -19,6 +19,12 @@ Chạy trên **Google Cloud** (Cloud Run, Vertex AI Gemini, Speech-to-Text, Text
 | [docs/OPERATIONS.md](docs/OPERATIONS.md) | Vận hành, xử lý sự cố |
 | [docs/spec/game1-english-city-simulator.md](docs/spec/game1-english-city-simulator.md) | Đặc tả gốc |
 
+## Hình ảnh
+
+| Bản đồ thành phố | Hội thoại với nhân vật AI | Kết quả đánh giá |
+|---|---|---|
+| ![](docs/screenshots/1-city-map.png) | ![](docs/screenshots/3-conversation.png) | ![](docs/screenshots/4-results.png) |
+
 ## Tính năng v1.0
 
 - 3 địa điểm (Airport, Restaurant & Café, University) + 3 địa điểm "sắp ra mắt"; **6 nhiệm vụ M01–M06** (B1/B2).

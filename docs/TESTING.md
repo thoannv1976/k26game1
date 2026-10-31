@@ -50,9 +50,19 @@ thực hiện thủ công trên môi trường dev (xem `docs/DEPLOYMENT.md` m�
 | 6 nhiệm vụ hoạt động | `packages/shared/test/scenario-missions.test.ts` (kịch bản mẫu hoàn thành từng giai đoạn); `gameplay.test.ts` (M01–M06 qua API) |
 | Chống prompt injection, nội dung không phù hợp | `security.test.ts` › server-side score protection; `units.test.ts` › prompts, moderation |
 
-## Kết quả gần nhất
+## Kết quả gần nhất (31/10/2026)
 
-Xem phần "Kết quả kiểm thử" trong `CHANGELOG.md` / mô tả Pull Request. CI (`.github/workflows/ci.yml`) chạy toàn bộ trên mỗi PR.
+| Bộ kiểm thử | Kết quả |
+|---|---|
+| `packages/shared` (engine, chấm điểm, 6 kịch bản nhiệm vụ) | 34/34 |
+| `apps/api` unit | 15/15 |
+| `apps/web` unit (WAV encoder, i18n) | 14/14 |
+| `apps/api` integration (emulators) | 63/63 |
+| Firestore Security Rules | 8/8 |
+| E2E Playwright (desktop + mobile) | 7/7 |
+| **Tổng** | **141/141** |
+
+Typecheck toàn bộ workspace và build (web + API + Docker image) đều thành công. CI (`.github/workflows/ci.yml`) chạy lại toàn bộ trên mỗi PR.
 
 ## Kiểm thử thủ công trước nghiệm thu (trên dev, với AI thật)
 
