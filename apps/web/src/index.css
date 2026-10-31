@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+
+/* Design tokens (light + dark via prefers-color-scheme). Utilities: bg-primary, text-fg, border-line… */
+:root {
+  --ecs-primary: #4f46e5;
+  --ecs-primary-hover: #4338ca;
+  --ecs-primary-fg: #ffffff;
+  --ecs-primary-soft: #eef2ff;
+  --ecs-canvas: #f6f7fb;
+  --ecs-surface: #ffffff;
+  --ecs-surface-2: #f1f3f9;
+  --ecs-fg: #0f172a;
+  --ecs-muted: #5b6478;
+  --ecs-line: #e2e5ee;
+  --ecs-success: #15803d;
+  --ecs-success-soft: #dcfce7;
+  --ecs-warn: #b45309;
+  --ecs-warn-soft: #fef3c7;
+  --ecs-danger: #b91c1c;
+  --ecs-danger-soft: #fee2e2;
+  --ecs-ground: #d9f0d3;
+  --ecs-ground-2: #c6e6bf;
+  --ecs-road: #8a94a6;
+  --ecs-sky: #e0f2fe;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ecs-primary: #818cf8;
+    --ecs-primary-hover: #a5b4fc;
+    --ecs-primary-fg: #0b1020;
+    --ecs-primary-soft: #1e1b4b;
+    --ecs-canvas: #0b1020;
+    --ecs-surface: #121a2e;
+    --ecs-surface-2: #1a2440;
+    --ecs-fg: #e7eaf3;
+    --ecs-muted: #a1aac0;
+    --ecs-line: #27324f;
+    --ecs-success: #4ade80;
+    --ecs-success-soft: #14321f;
+    --ecs-warn: #fbbf24;
+    --ecs-warn-soft: #3a2a07;
+    --ecs-danger: #f87171;
+    --ecs-danger-soft: #3b1212;
+    --ecs-ground: #1d3a2a;
+    --ecs-ground-2: #18321f;
+    --ecs-road: #4b566d;
+    --ecs-sky: #0f1b33;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-primary: var(--ecs-primary);
+  --color-primary-hover: var(--ecs-primary-hover);
+  --color-primary-fg: var(--ecs-primary-fg);
+  --color-primary-soft: var(--ecs-primary-soft);
+  --color-canvas: var(--ecs-canvas);
+  --color-surface: var(--ecs-surface);
+  --color-surface-2: var(--ecs-surface-2);
+  --color-fg: var(--ecs-fg);
+  --color-muted: var(--ecs-muted);
+  --color-line: var(--ecs-line);
+  --color-success: var(--ecs-success);
+  --color-success-soft: var(--ecs-success-soft);
+  --color-warn: var(--ecs-warn);
+  --color-warn-soft: var(--ecs-warn-soft);
+  --color-danger: var(--ecs-danger);
+  --color-danger-soft: var(--ecs-danger-soft);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html,
+body {
+  background: var(--ecs-canvas);
+  color: var(--ecs-fg);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ecs-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------------- City map ---------------- */
+.city-building {
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+  outline: none;
+}
+.city-building:hover,
+.city-building:focus-visible,
+.city-building[data-selected='true'] {
+  transform: translateY(-8px);
+  filter: drop-shadow(0 10px 8px rgb(15 23 42 / 0.25));
+}
+.city-building:focus-visible .city-focus {
+  stroke: var(--ecs-primary);
+  stroke-width: 4;
+}
+.city-building .city-label {
+  opacity: 0.92;
+  transition: opacity 150ms ease;
+}
+.city-building:hover .city-label,
+.city-building:focus-visible .city-label {
+  opacity: 1;
+}
+.city-building[data-available='false'] {
+  cursor: not-allowed;
+}
+.city-building[data-available='false'] .city-body {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+.city-building[data-available='false']:hover {
+  transform: none;
+  filter: none;
+}
+
+@keyframes ecs-cloud {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(1200px);
+  }
+}
+@keyframes ecs-car-a {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(570px, 285px);
+  }
+}
+@keyframes ecs-car-b {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(570px, -285px);
+  }
+}
+@keyframes ecs-flag {
+  0%,
+  100% {
+    transform: skewY(0deg);
+  }
+  50% {
+    transform: skewY(-8deg);
+  }
+}
+@keyframes ecs-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+.city-cloud {
+  animation: ecs-cloud 70s linear infinite;
+}
+.city-cloud.slow {
+  animation-duration: 110s;
+  animation-delay: -40s;
+}
+.city-car-a {
+  animation: ecs-car-a 14s linear infinite;
+}
+.city-car-b {
+  animation: ecs-car-b 18s linear infinite;
+  animation-delay: -6s;
+}
+.city-flag {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: ecs-flag 2.4s ease-in-out infinite;
+}
+.speaking-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ecs-pulse 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
