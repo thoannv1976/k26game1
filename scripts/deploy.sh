@@ -35,10 +35,22 @@ gcloud run deploy ecs-api --project "${PROJECT_ID}" --region "${REGION}" --image
   --min-instances "${MIN_INSTANCES:-0}" --max-instances "${MAX_INSTANCES:-10}" \
   --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LOG_LEVEL=info"
 
+# Firebase Hosting calls Cloud Run without a Google identity, so the service must accept public requests
+# (the API checks Firebase ID tokens itself). Organisations with "Domain restricted sharing" block allUsers;
+# in that case turn off the Cloud Run invoker IAM check instead.
+RUN_URL="$(gcloud run services describe ecs-api --project "${PROJECT_ID}" --region "${REGION}" --format='value(status.url)')"
+if [[ "$(curl -s -o /dev/null -w '%{http_code}' "${RUN_URL}/api/health")" == "403" ]]; then
+  echo "==> Public access blocked by IAM policy – disabling the Cloud Run invoker IAM check"
+  gcloud run services update ecs-api --project "${PROJECT_ID}" --region "${REGION}" --no-invoker-iam-check
+fi
+curl -fsS "${RUN_URL}/api/health" && echo
+
 echo "==> Building web app"
 npm run build --workspace @ecs/web
 
 echo "==> Deploying Firebase Hosting, Firestore rules and indexes"
+npx firebase hosting:sites:get "${PROJECT_ID}" --project "${PROJECT_ID}" >/dev/null 2>&1 || \
+  npx firebase hosting:sites:create "${PROJECT_ID}" --project "${PROJECT_ID}" --non-interactive
 npx firebase deploy --project "${PROJECT_ID}" --only hosting,firestore:rules,firestore:indexes --non-interactive
 
 echo "==> Smoke test"

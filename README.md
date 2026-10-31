@@ -10,7 +10,8 @@ Chạy trên **Google Cloud** (Cloud Run, Vertex AI Gemini, Speech-to-Text, Text
 | Tài liệu | Nội dung |
 |---|---|
 | [PLAN.md](PLAN.md) | Kế hoạch xây dựng |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | **Triển khai lên GCP/Firebase** (dành cho Claude Cowork / Cloud Shell) |
+| [docs/COWORK-DEPLOY.md](docs/COWORK-DEPLOY.md) | **Hướng dẫn dán vào Claude Cowork để triển khai** |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Triển khai lên GCP/Firebase (chi tiết, xử lý sự cố) |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Kiến trúc, luồng xử lý |
 | [docs/DATABASE.md](docs/DATABASE.md) | Cấu trúc Firestore |
 | [docs/API.md](docs/API.md) | REST API, API tích hợp LMS-AI9 |

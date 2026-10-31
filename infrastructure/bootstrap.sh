@@ -77,7 +77,7 @@ gcloud iam service-accounts add-iam-policy-binding "${RUNTIME_EMAIL}" --member="
 
 say "Cloud Build permissions (for 'gcloud builds submit' from Cloud Shell)"
 COMPUTE_SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
-for role in roles/artifactregistry.writer roles/logging.logWriter roles/storage.objectViewer; do
+for role in roles/cloudbuild.builds.builder roles/artifactregistry.writer roles/logging.logWriter roles/storage.objectViewer; do
   gcloud projects add-iam-policy-binding "${PROJECT_ID}" --member="serviceAccount:${COMPUTE_SA}" --role="${role}" --condition=None >/dev/null 2>&1 || true
 done
 

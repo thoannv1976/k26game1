@@ -68,8 +68,21 @@ GEMINI_MODEL=gemini-2.5-flash bash scripts/deploy.sh
 Script: cài thư viện → chạy unit test → build image bằng Cloud Build → `gcloud run deploy ecs-api` → build web →
 `firebase deploy` (Hosting, Firestore rules, indexes) → gọi `https://k26game1.web.app/api/health`.
 
-> Nếu tổ chức chặn `--allow-unauthenticated` (chính sách *Domain restricted sharing*), cần cho phép `allUsers` gọi dịch vụ
-> `ecs-api`: Firebase Hosting gọi Cloud Run công khai; API tự xác thực bằng Firebase ID token ở mọi endpoint.
+> **Tổ chức chặn truy cập công khai.** Firebase Hosting gọi Cloud Run không kèm danh tính Google, nên dịch vụ `ecs-api`
+> phải nhận request công khai (API tự kiểm tra Firebase ID token ở mọi endpoint). Tổ chức mới thường bật chính sách
+> *Domain restricted sharing* (`iam.allowedPolicyMemberDomains`) nên `--allow-unauthenticated` không gán được `allUsers`.
+> `scripts/deploy.sh` tự xử lý bằng `gcloud run services update ecs-api --no-invoker-iam-check`. Nếu chính sách
+> `run.managed.requireInvokerIam` cũng chặn cách này, người có quyền Organization Policy Administrator cho phép ngoại lệ ở project:
+>
+> ```bash
+> gcloud org-policies describe iam.allowedPolicyMemberDomains --effective --project k26game1
+> ```
+>
+> ```bash
+> printf 'name: projects/k26game1/policies/iam.allowedPolicyMemberDomains\nspec:\n  rules:\n  - allowAll: true\n' > /tmp/p.yaml && gcloud org-policies set-policy /tmp/p.yaml
+> ```
+>
+> rồi chạy lại `bash scripts/deploy.sh`.
 
 ## 5. Triển khai tự động bằng GitHub Actions
 
