@@ -6,7 +6,8 @@ export GCP_PROJECT_ID=demo-ecs FIRESTORE_EMULATOR_HOST=127.0.0.1:8085 FIREBASE_A
 
 npx firebase emulators:start --only firestore,auth --project demo-ecs > test-results/emulators.log 2>&1 &
 EMU=$!
-trap 'kill $EMU $API 2>/dev/null || true' EXIT
+API=''
+trap 'kill $EMU ${API:-} 2>/dev/null; pkill -f cloud-firestore-emulator 2>/dev/null; true' EXIT
 for i in $(seq 1 90); do
   curl -sf http://127.0.0.1:9099/ >/dev/null 2>&1 && curl -sf http://127.0.0.1:8085/ >/dev/null 2>&1 && break
   sleep 1

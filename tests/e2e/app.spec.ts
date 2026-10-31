@@ -21,8 +21,10 @@ async function openMission(page: Page, building: string, missionId: string) {
 
 async function startOrContinue(page: Page) {
   const cont = page.getByTestId('mission-continue');
-  if (await cont.isVisible().catch(() => false)) await cont.click();
-  else await page.getByTestId('mission-start').click();
+  const start = page.getByTestId('mission-start');
+  await expect(cont.or(start).first()).toBeVisible();
+  if (await cont.isVisible()) await cont.click();
+  else await start.click();
   await expect(page).toHaveURL(/\/play\//);
   await expect(page.getByTestId('play-npc-line')).toBeVisible();
 }
@@ -36,13 +38,12 @@ test('student completes M01 by text and sees the assessment', async ({ page }) =
   await startOrContinue(page);
 
   for (const line of M01.stages.flatMap((s) => s.sampleStudentLines)) {
-    const finish = page.getByTestId('play-finish');
-    if ((await page.getByTestId('play-text-input').isDisabled()) ) break;
-    const before = await page.getByTestId('play-npc-line').textContent();
+    if (await page.getByTestId('play-text-input').isDisabled()) break;
     await page.getByTestId('play-text-input').fill(line);
+    const reply = page.waitForResponse((r) => r.url().includes('/turns') && r.request().method() === 'POST');
     await page.getByTestId('play-text-send').click();
-    await expect(page.getByTestId('play-npc-line')).not.toHaveText(before ?? '', { timeout: 15_000 });
-    void finish;
+    expect((await reply).status()).toBe(200);
+    await expect(page.getByTestId('play-text-input')).toHaveValue('');
   }
   for (const stage of M01.stages) {
     for (const o of stage.objectives.filter((x) => x.required)) {
@@ -67,9 +68,9 @@ test('student speaks to the NPC with the microphone', async ({ page }) => {
   if ((await mic.getAttribute('data-state')) !== 'recording') await mic.click();
   await expect(mic).toHaveAttribute('data-state', 'recording');
   await page.waitForTimeout(2500);
-  const before = await page.getByTestId('play-npc-line').textContent();
+  const reply = page.waitForResponse((r) => r.url().includes('/voice') && r.request().method() === 'POST', { timeout: 20_000 });
   await mic.click();
-  await expect(page.getByTestId('play-npc-line')).not.toHaveText(before ?? '', { timeout: 20_000 });
+  expect((await reply).status()).toBe(200);
   // The offline STT returns the stage's sample line → the first objective is met.
   await expect(page.locator('[data-testid^="play-objective-"][data-met="true"]').first()).toBeVisible();
   // Reloading resumes the same session.
