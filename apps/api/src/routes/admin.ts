@@ -79,7 +79,11 @@ export async function adminRoutes(app: FastifyInstance, deps: Deps) {
     const { resetPassword, ...fields } = body;
     await ref.update(fields);
     if (body.role) await deps.auth.setCustomUserClaims(uid, { tenantId: m.tenantId, role: body.role });
-    if (body.disabled !== undefined) await deps.auth.updateUser(uid, { disabled: body.disabled });
+    if (body.disabled !== undefined) {
+      await deps.auth.updateUser(uid, { disabled: body.disabled });
+      if (body.disabled) await deps.auth.revokeRefreshTokens(uid);
+    }
+    if (body.role) await deps.auth.revokeRefreshTokens(uid); // force a token refresh with the new role
     let temporaryPassword: string | null = null;
     if (resetPassword) {
       const { generatePassword } = await import('../services/users.js');

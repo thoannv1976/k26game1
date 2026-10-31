@@ -17,7 +17,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "build": "npm run build --workspace @ecs/web && npm run build --workspace @ecs/api",
     "emulators": "firebase emulators:start --only firestore,auth --project demo-ecs",
-    "seed:local": "tsx scripts/seed.ts --local",
+    "seed:local": "tsx scripts/seed.mts --local",
     "dev:api": "npm run dev --workspace @ecs/api",
     "dev:web": "npm run dev --workspace @ecs/web",
     "test:e2e": "playwright test -c tests/e2e/playwright.config.ts"

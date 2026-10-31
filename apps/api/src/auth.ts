@@ -30,7 +30,8 @@ export async function authenticate(deps: Deps, req: FastifyRequest): Promise<Aut
   if (!m) throw new ApiError('UNAUTHENTICATED', 'Missing bearer token');
   let decoded;
   try {
-    decoded = await deps.auth.verifyIdToken(m[1]!);
+    // checkRevoked=true also rejects disabled accounts and revoked sessions immediately.
+    decoded = await deps.auth.verifyIdToken(m[1]!, true);
   } catch {
     throw new ApiError('UNAUTHENTICATED', 'Invalid or expired token');
   }
