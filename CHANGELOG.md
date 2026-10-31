@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 – 2026-10-31
+
+### Fixed
+- Gemini 3.x Flash models (e.g. `gemini-3-flash-preview`, the Flash model available to k26game1 after `gemini-2.5-flash` returned 404) now get an explicit thinking budget. Default thinking used up `maxOutputTokens`, truncating the JSON reply so every turn fell back to "Sorry, could you repeat that".
+
 ## 1.0.0 – 2026-10-31
 
 First complete version of English City Simulator (Game 1).

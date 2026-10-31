@@ -90,9 +90,13 @@ const SAFETY = [
   HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
 ].map((category) => ({ category, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }));
 
-/** Gemini 2.5 models "think" by default; disable it for low-latency conversation. */
+/**
+ * Gemini 2.5 and 3.x Flash models "think" by default. Thinking tokens count against maxOutputTokens,
+ * which truncates the JSON reply, so cap it explicitly (0 = off for low-latency conversation).
+ */
 function thinking(model: string, budget: number) {
-  return model.startsWith('gemini-2.5') ? { thinkingConfig: { thinkingBudget: budget } } : {};
+  const capped = model.startsWith('gemini-2.5') || /^gemini-3[\d.]*-flash/.test(model);
+  return capped ? { thinkingConfig: { thinkingBudget: budget } } : {};
 }
 
 function cap<T extends unknown[]>(arr: T | undefined, n: number): T {
