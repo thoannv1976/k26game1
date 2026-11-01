@@ -53,7 +53,7 @@ Các quyết định kỹ thuật mặc định (đổi được trước GĐ 1)
 | T3 | Chấm bất đồng bộ | `POST /submit` lưu bài + trả `202 queued`; việc chấm được "nhận" bằng khóa trong Firestore và chạy khi client kiểm tra trạng thái (`GET /results`), tự thử lại nếu lỗi; **không cần gửi lại bài** | Đúng đặc tả IX, không cần thêm Cloud Tasks; có thể nâng cấp lên Cloud Tasks sau |
 | T4 | Lưu nháp | Tự lưu lên server mỗi 10 giây khi có thay đổi (kèm số phiên bản chống ghi đè) + bản sao trong trình duyệt khi mất mạng | "Không để lỗi mạng làm mất bài" |
 | T5 | Hồ sơ vụ việc | Mỗi phiên bản dossier là **một tài liệu Firestore** (tài liệu, nhân vật, bằng chứng, câu hỏi, đáp án, rubric) chỉ backend đọc được; client chỉ nhận phần đã mở khóa | Phiên bản hóa nguyên khối, không lộ đáp án ra trình duyệt |
-| T6 | Mô hình AI | Gemini Flash qua Vertex AI (`GEMINI_MODEL`), cùng cấu hình với Game 1 | Đã kiểm chứng kiến trúc ở Game 1 |
+| T6 | Mô hình AI | Gemini Flash qua Vertex AI (`GEMINI_MODEL`), dùng model đang chạy được ở Game 1 (`gemini-3-flash-preview` – `gemini-2.5-flash` trả 404 trên k26game1), giới hạn "thinking" để không cắt cụt JSON | Đã kiểm chứng khi triển khai Game 1 |
 | T7 | Giao diện | Tiếng Việt/Anh, nội dung vụ việc bằng tiếng Anh; 2.5D bằng SVG như Game 1 | Đồng bộ trải nghiệm hai game |
 
 ---
