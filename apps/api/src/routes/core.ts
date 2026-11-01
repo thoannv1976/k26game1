@@ -48,8 +48,15 @@ export async function coreRoutes(app: FastifyInstance, deps: Deps) {
       throw new ApiError('NOT_PROVISIONED', 'Your account has not been added to a school yet. Please contact your teacher.');
     }
     const m = requireTenantMember(u);
-    const [user, tenant] = await Promise.all([getUserDoc(deps, m.tenantId, m.uid), getTenant(deps, m.tenantId)]);
-    if (!user) throw new ApiError('NOT_PROVISIONED', 'User profile not found');
+    const tenantSnap = await p.tenant(m.tenantId).get();
+    if (!tenantSnap.exists) throw new ApiError('NOT_PROVISIONED', 'Your school has not been set up in English City Simulator yet. Please contact the school administrator.');
+    const tenant = await getTenant(deps, m.tenantId);
+    let user = await getUserDoc(deps, m.tenantId, m.uid);
+    if (!user) {
+      // Account created by another K26 game (e.g. English Detective) in the same Firebase project: create the profile on first visit.
+      user = newUserDoc(m.uid, m.tenantId, { email: m.email, displayName: m.name, role: m.role as Exclude<UserDoc['role'], 'platform_admin'> }, deps.now());
+      await p.user(m.tenantId, m.uid).set(user);
+    }
     if (user.disabled) throw new ApiError('FORBIDDEN', 'This account is disabled');
     return { user, tenant: { id: tenant.id, name: tenant.name } };
   });

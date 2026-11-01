@@ -67,19 +67,19 @@ trong `packages/shared/src/schemas.ts` (401 UNAUTHENTICATED, 403 FORBIDDEN/NOT_P
 | GET | `/lms/v1/results?courseId=&since=ISO&limit=` | Danh sách minh chứng học tập |
 | GET | `/lms/v1/evidence/:sessionId` | Một minh chứng |
 
-Định dạng minh chứng (`schema: "ecs-evidence-1.0"`):
+Định dạng minh chứng chung của các game K26 (`schema: "k26-evidence-1.0"`, dùng chung với English Detective):
 
 ```json
 {
-  "schema": "ecs-evidence-1.0",
+  "schema": "k26-evidence-1.0",
   "evidenceId": "ecs:<tenantId>:<sessionId>",
   "source": "english-city-simulator",
   "learner": { "uid": "...", "email": "...", "studentCode": "SV001", "name": "..." },
   "courseId": "...",
-  "activity": { "type": "speaking_mission", "missionId": "M02", "missionVersion": 1, "title": "Lost Luggage", "level": "B1" },
+  "activity": { "type": "speaking_mission", "id": "M02", "version": 1, "title": "Lost Luggage", "level": "B1" },
   "skills": ["listening", "speaking"],
   "result": {
-    "missionCompleted": true, "objectivesMet": 9, "objectivesRequired": 9,
+    "completed": true, "objectivesMet": 9, "objectivesRequired": 9,
     "aiPercent": 82, "finalPercent": 85, "scoreType": "teacher_validated | ai_practice",
     "criteria": { "taskCompletion": { "score": 30, "max": 30, "status": "assessed", "source": "engine" } },
     "evidenceMode": "voice | text | mixed", "speakingEvidence": true

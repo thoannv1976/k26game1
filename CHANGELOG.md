@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 – 2026-11-01
+
+### Changed
+- Accounts are shared with English Detective (Game 2) in the same Firebase project: a user whose claims point to a school
+  that exists here gets a profile automatically on first visit; schools that are not set up here get a clear message.
+- LMS API now returns the common K26 learning-evidence format `k26-evidence-1.0` (same as English Detective).
+
 ## 1.0.1 – 2026-10-31
 
 ### Fixed

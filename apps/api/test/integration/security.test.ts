@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { getBuiltinMission } from '@ecs/shared';
 import {
-  api, createCourse, createPlatformAdmin, createTenant, createUnprovisioned, createUser, makeApp, uuid,
+  api, createCourse, createPlatformAdmin, createTenant, createUnprovisioned, createUser, makeApp, signIn, uuid,
   type TestCtx, type TestUser,
 } from '../helpers.js';
 
@@ -57,6 +57,25 @@ describe('authentication', () => {
   });
   it('health check is public', async () => {
     expect((await api(ctx, null, 'GET', '/api/health')).status).toBe(200);
+  });
+});
+
+describe('accounts shared with other K26 games', () => {
+  it('an account created by English Detective (claims only) gets a profile on first visit', async () => {
+    const email = `game2-${Date.now()}@test.edu.vn`;
+    const rec = await ctx.deps.auth.createUser({ email, password: 'Test-password-123', displayName: 'From Game 2' });
+    await ctx.deps.auth.setCustomUserClaims(rec.uid, { tenantId: tA, role: 'student' });
+    const token = await signIn(email);
+    const r = await api(ctx, { uid: rec.uid, email, token }, 'GET', '/api/me');
+    expect(r.status).toBe(200);
+    expect(r.body.user).toMatchObject({ uid: rec.uid, role: 'student', xp: 0 });
+  });
+  it('a school that only exists in another game is refused clearly', async () => {
+    const email = `nos-${Date.now()}@test.edu.vn`;
+    const rec = await ctx.deps.auth.createUser({ email, password: 'Test-password-123' });
+    await ctx.deps.auth.setCustomUserClaims(rec.uid, { tenantId: 'only-in-detective', role: 'student' });
+    const r = await api(ctx, { uid: rec.uid, email, token: await signIn(email) }, 'GET', '/api/me');
+    expect(r.body.error.code).toBe('NOT_PROVISIONED');
   });
 });
 

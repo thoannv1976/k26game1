@@ -14,7 +14,8 @@ import { assessmentsForStudents, usersByIds } from './teacher.js';
  * Authentication: Firebase ID token of a school_admin (or a dedicated integration account
  * with the school_admin role). LTI 1.3 / SSO will be added in a later phase.
  */
-export const EVIDENCE_SCHEMA_VERSION = 'ecs-evidence-1.0';
+/** Common K26 learning-evidence format (shared with English Detective and VSTEP Quest). */
+export const EVIDENCE_SCHEMA_VERSION = 'k26-evidence-1.0';
 
 function evidence(a: AssessmentDoc, user: UserDoc | undefined, title: string, s?: SessionDoc) {
   const reviewed = applyTeacherReview(a.criteria, a.teacherReview);
@@ -25,16 +26,17 @@ function evidence(a: AssessmentDoc, user: UserDoc | undefined, title: string, s?
     tenantId: a.tenantId,
     learner: { uid: a.uid, email: user?.email ?? null, studentCode: user?.studentCode ?? null, name: user?.displayName ?? null },
     courseId: a.courseId,
-    activity: { type: 'speaking_mission', missionId: a.missionId, missionVersion: a.missionVersion, title, level: a.level },
-    skills: ['listening', 'speaking'],
+    activity: { type: 'speaking_mission', id: a.missionId, version: a.missionVersion, title, level: a.level },
+    skills: a.evidenceMode === 'text' ? ['listening'] : ['listening', 'speaking'],
     result: {
-      missionCompleted: a.missionCompleted,
-      objectivesMet: a.objectivesMet,
-      objectivesRequired: a.objectivesRequired,
+      completed: a.missionCompleted,
       aiPercent: a.percent,
       finalPercent: a.finalPercent,
       scoreType: a.teacherReview ? 'teacher_validated' : 'ai_practice',
       criteria: Object.fromEntries(Object.entries(reviewed.criteria).map(([k, v]) => [k, { score: v.score, max: v.max, status: v.status, source: v.source }])),
+      // Game-specific details
+      objectivesMet: a.objectivesMet,
+      objectivesRequired: a.objectivesRequired,
       evidenceMode: a.evidenceMode,
       speakingEvidence: a.evidenceMode !== 'text',
     },

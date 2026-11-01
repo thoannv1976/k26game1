@@ -82,11 +82,11 @@ describe('teacher workflow', () => {
     const r = await api(ctx, admin, 'GET', `/api/lms/v1/results?courseId=${courseId}`);
     expect(r.status).toBe(200);
     expect(r.body.items[0]).toMatchObject({
-      schema: 'ecs-evidence-1.0',
+      schema: 'k26-evidence-1.0',
       source: 'english-city-simulator',
       learner: { uid: student.uid, email: student.email },
-      activity: { missionId: 'M05', type: 'speaking_mission' },
-      result: { scoreType: 'teacher_validated', speakingEvidence: false },
+      activity: { id: 'M05', type: 'speaking_mission' },
+      result: { scoreType: 'teacher_validated', speakingEvidence: false, completed: true },
     });
     const one = await api(ctx, admin, 'GET', `/api/lms/v1/evidence/${sessionId}`);
     expect(one.body.evidenceId).toBe(`ecs:${tenantId}:${sessionId}`);
