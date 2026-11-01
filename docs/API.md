@@ -66,6 +66,7 @@ trong `packages/shared/src/schemas.ts` (401 UNAUTHENTICATED, 403 FORBIDDEN/NOT_P
 |---|---|---|
 | GET | `/lms/v1/results?courseId=&since=ISO&limit=` | Danh sách minh chứng học tập |
 | GET | `/lms/v1/evidence/:sessionId` | Một minh chứng |
+| GET | `/lms/v1/learners/:uid/evidence?limit=` | Minh chứng của một người học (mới nhất trước). Ngoài school_admin, **tài khoản dịch vụ `vstep-api`** (VSTEP Quest – Game 3) được gọi bằng Google ID token (audience `k26-lms`) kèm header `X-K26-Tenant` – chỉ đọc, chỉ endpoint này; danh sách tài khoản cho phép: biến `LMS_SERVICE_ACCOUNTS` |
 
 Định dạng minh chứng chung của các game K26 (`schema: "k26-evidence-1.0"`, dùng chung với English Detective):
 

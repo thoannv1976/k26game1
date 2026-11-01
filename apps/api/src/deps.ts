@@ -5,6 +5,7 @@ import { FakeAiProvider } from './ai/fake.js';
 import { VertexAiProvider } from './ai/vertex.js';
 import { GcsBlobStore, LocalBlobStore, MemoryBlobStore, type BlobStore } from './blob.js';
 import type { AppConfig } from './config.js';
+import type { ServiceTokenVerifier } from './serviceAuth.js';
 import { adminAuth, firestore } from './firebase.js';
 import { FakeSpeechToText, GoogleSpeechToText, type SpeechToText } from './speech/stt.js';
 import { FakeTextToSpeech, GoogleTextToSpeech, type TextToSpeech } from './speech/tts.js';
@@ -18,6 +19,8 @@ export interface Deps {
   tts: TextToSpeech;
   blobs: BlobStore;
   now: () => Date;
+  /** Test hook: verifies Google service ID tokens (default: Google public keys). */
+  serviceTokenVerifier?: ServiceTokenVerifier;
 }
 
 export function createDeps(config: AppConfig, overrides: Partial<Deps> = {}): Deps {
@@ -36,5 +39,6 @@ export function createDeps(config: AppConfig, overrides: Partial<Deps> = {}): De
           ? new LocalBlobStore(config.localDataDir)
           : new MemoryBlobStore()),
     now: overrides.now ?? (() => new Date()),
+    serviceTokenVerifier: overrides.serviceTokenVerifier,
   };
 }

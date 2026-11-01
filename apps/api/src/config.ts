@@ -17,6 +17,9 @@ export interface AppConfig {
   aiMaxRetries: number;
   logLevel: string;
   corsOrigins: string[];
+  /** D4: service accounts (e.g. vstep-api@…) allowed to read learner evidence; empty = disabled. */
+  lmsServiceAccounts: string[];
+  lmsServiceAudience: string;
 }
 
 function str(name: string, def: string): string {
@@ -46,6 +49,8 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     aiMaxRetries: Number(str('AI_MAX_RETRIES', '2')),
     logLevel: str('LOG_LEVEL', prod ? 'info' : 'debug'),
     corsOrigins: str('CORS_ORIGINS', '').split(',').filter(Boolean),
+    lmsServiceAccounts: str('LMS_SERVICE_ACCOUNTS', '').split(',').map((x) => x.trim()).filter(Boolean),
+    lmsServiceAudience: str('LMS_SERVICE_AUDIENCE', 'k26-lms'),
     ...overrides,
   };
   assertSafeConfig(cfg);

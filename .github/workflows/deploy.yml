@@ -50,7 +50,7 @@ jobs:
             --service-account "${{ vars.RUNTIME_SA }}" --allow-unauthenticated \
             --memory 1Gi --cpu 1 --concurrency 40 --timeout 120 \
             --min-instances "${{ vars.MIN_INSTANCES || '0' }}" --max-instances "${{ vars.MAX_INSTANCES || '10' }}" \
-            --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${{ vars.VERTEX_LOCATION || vars.GCP_REGION || 'asia-southeast1' }},AUDIO_BUCKET=${{ vars.AUDIO_BUCKET }},GEMINI_MODEL=${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }},LOG_LEVEL=info"
+            --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${{ vars.VERTEX_LOCATION || vars.GCP_REGION || 'asia-southeast1' }},AUDIO_BUCKET=${{ vars.AUDIO_BUCKET }},GEMINI_MODEL=${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }},LMS_SERVICE_ACCOUNTS=${{ vars.LMS_SERVICE_ACCOUNTS || format('vstep-api@{0}.iam.gserviceaccount.com', vars.GCP_PROJECT_ID) }},LOG_LEVEL=info"
 
       - name: Build web
         env:

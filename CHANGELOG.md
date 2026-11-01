@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 – 2026-11-01
+
+### Added
+- `GET /api/lms/v1/learners/:uid/evidence`: one learner's evidence (k26-evidence-1.0). Besides school admins, the
+  VSTEP Quest (Game 3) service account may call it read-only with a Google ID token (audience `k26-lms`) and the
+  `X-K26-Tenant` header, so Game 3 can show a four-skill profile across the K26 games. Allowed accounts:
+  `LMS_SERVICE_ACCOUNTS` (deploy default `vstep-api@<project>.iam.gserviceaccount.com`; empty = disabled).
+
 ## 1.1.0 – 2026-11-01
 
 ### Changed

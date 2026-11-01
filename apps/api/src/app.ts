@@ -4,6 +4,7 @@ import multipart from '@fastify/multipart';
 import rateLimit from '@fastify/rate-limit';
 import { ZodError, type ZodType } from 'zod';
 import { authenticate } from './auth.js';
+import { isServiceRequest } from './serviceAuth.js';
 import type { Deps } from './deps.js';
 import { ApiError } from './errors.js';
 import { coreRoutes } from './routes/core.js';
@@ -56,6 +57,8 @@ export async function buildApp(deps: Deps, opts: { logger?: boolean } = {}): Pro
   // Authenticate every other /api route.
   app.addHook('preHandler', async (req) => {
     if (req.url === '/api/health' || !req.url.startsWith('/api/')) return;
+    // Service-to-service evidence reads (Game 3) carry a Google ID token instead of a Firebase one.
+    if (isServiceRequest(req)) return;
     req.authUser = await authenticate(deps, req);
   });
 

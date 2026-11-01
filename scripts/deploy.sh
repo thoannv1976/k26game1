@@ -33,7 +33,7 @@ gcloud run deploy ecs-api --project "${PROJECT_ID}" --region "${REGION}" --image
   --service-account "${RUNTIME_SA}" --allow-unauthenticated \
   --memory 1Gi --cpu 1 --concurrency 40 --timeout 120 \
   --min-instances "${MIN_INSTANCES:-0}" --max-instances "${MAX_INSTANCES:-10}" \
-  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LOG_LEVEL=info"
+  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LMS_SERVICE_ACCOUNTS=${LMS_SERVICE_ACCOUNTS:-vstep-api@${PROJECT_ID}.iam.gserviceaccount.com},LOG_LEVEL=info"
 
 # Firebase Hosting calls Cloud Run without a Google identity, so the service must accept public requests
 # (the API checks Firebase ID tokens itself). Organisations with "Domain restricted sharing" block allUsers;
