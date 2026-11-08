@@ -3,7 +3,7 @@
 #   bash scripts/deploy.sh            # deploy API + web + rules/indexes to PROJECT_ID
 # Requires: gcloud (logged in), node 22, npm. Reads web config from apps/web/.env.production.
 # Env: PROJECT_ID (default k26game1), REGION (default asia-southeast1), GEMINI_MODEL (default gemini-2.5-flash),
-#      MIN_INSTANCES (default 0), MAX_INSTANCES (default 10)
+#      MIN_INSTANCES (default 0), MAX_INSTANCES (default 10), FIREBASE_ACCOUNT (firebase-tools --account)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -55,9 +55,9 @@ echo "==> Building web app"
 npm run build --workspace @ecs/web
 
 echo "==> Deploying Firebase Hosting, Firestore rules and indexes"
-npx firebase hosting:sites:get "${PROJECT_ID}" --project "${PROJECT_ID}" >/dev/null 2>&1 || \
-  npx firebase hosting:sites:create "${PROJECT_ID}" --project "${PROJECT_ID}" --non-interactive
-npx firebase deploy --project "${PROJECT_ID}" --only hosting,firestore:rules,firestore:indexes --non-interactive
+npx firebase hosting:sites:get "${PROJECT_ID}" --project "${PROJECT_ID}" ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"} >/dev/null 2>&1 || \
+  npx firebase hosting:sites:create "${PROJECT_ID}" --project "${PROJECT_ID}" --non-interactive ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"}
+npx firebase deploy --project "${PROJECT_ID}" --only hosting,firestore:rules,firestore:indexes --non-interactive ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"}
 
 echo "==> Smoke test"
 URL="https://${PROJECT_ID}.web.app"
