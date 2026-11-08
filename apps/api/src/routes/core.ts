@@ -19,6 +19,7 @@ import { ApiError, notFound } from '../errors.js';
 import { paths } from '../paths.js';
 import { getTenant, getUserDoc, listApprovedMissions, publicMission } from '../tenants.js';
 import { completeSession, getResults } from '../services/assessment.js';
+import { syncGrade } from '../lti/gradeSync.js';
 import { getSession, processTurn, setPaused, startSession, useHint, useReplay } from '../services/sessions.js';
 import { newUserDoc } from '../services/users.js';
 import { ttsPath } from '../speech/tts.js';
@@ -173,6 +174,7 @@ export async function coreRoutes(app: FastifyInstance, deps: Deps) {
   app.post('/api/sessions/:id/complete', async (req) => {
     const m = requireTenantMember(req.authUser);
     const a = await completeSession(deps, m, (req.params as { id: string }).id);
+    await syncGrade(deps, m.tenantId, a, a.createdAt, req.log);
     return { assessmentId: a.id };
   });
 

@@ -122,6 +122,17 @@ export async function startSession(deps: Deps, m: Member, input: { missionId: st
     .get();
   if (!existing.empty && !input.restart) {
     const s = existing.docs[0]!.data() as SessionDoc;
+    // A session started outside an assignment and resumed from one (e.g. an LMS launch) gets linked to it,
+    // so its result can be reported to that assignment.
+    if (input.assignmentId && !s.assignmentId) {
+      const a = (await p.assignments(m.tenantId).doc(input.assignmentId).get()).data() as AssignmentDoc | undefined;
+      const c = a && a.missionId === s.missionId ? ((await p.course(m.tenantId, a.courseId).get()).data() as CourseDoc | undefined) : undefined;
+      if (a && c && c.studentIds.includes(m.uid)) {
+        await p.session(m.tenantId, s.id).update({ assignmentId: a.id, courseId: a.courseId });
+        s.assignmentId = a.id;
+        s.courseId = a.courseId;
+      }
+    }
     const sMission = await getMissionVersion(deps, m.tenantId, s.missionId, s.missionVersion);
     return {
       resumed: true,

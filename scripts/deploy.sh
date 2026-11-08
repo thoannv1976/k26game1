@@ -28,12 +28,18 @@ npm run test:unit
 echo "==> Building API image ${IMAGE} with Cloud Build"
 gcloud builds submit --project "${PROJECT_ID}" --config infrastructure/cloudbuild.api.yaml --substitutions "_IMAGE=${IMAGE}" .
 
+# UniGame Hub (LTI 1.3). Off unless LTI_ENABLED=true; the shared secret lives in Secret Manager.
+LTI_ENV="LTI_ENABLED=${LTI_ENABLED:-false},LTI_HUB_URL=${LTI_HUB_URL:-},LTI_TENANT_MAP=${LTI_TENANT_MAP:-}"
+LTI_SECRET_ARGS=()
+if [[ "${LTI_ENABLED:-false}" == "true" ]]; then LTI_SECRET_ARGS=(--update-secrets "LTI_GAME_SECRET=${LTI_SECRET_NAME:-unigamehub-secret}:latest"); fi
+
 echo "==> Deploying Cloud Run service ecs-api"
 gcloud run deploy ecs-api --project "${PROJECT_ID}" --region "${REGION}" --image "${IMAGE}" \
   --service-account "${RUNTIME_SA}" --allow-unauthenticated \
   --memory 1Gi --cpu 1 --concurrency 40 --timeout 120 \
   --min-instances "${MIN_INSTANCES:-0}" --max-instances "${MAX_INSTANCES:-10}" \
-  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LMS_SERVICE_ACCOUNTS=${LMS_SERVICE_ACCOUNTS:-vstep-api@${PROJECT_ID}.iam.gserviceaccount.com},LOG_LEVEL=info"
+  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LMS_SERVICE_ACCOUNTS=${LMS_SERVICE_ACCOUNTS:-vstep-api@${PROJECT_ID}.iam.gserviceaccount.com},LOG_LEVEL=info,${LTI_ENV}" \
+  ${LTI_SECRET_ARGS[@]+"${LTI_SECRET_ARGS[@]}"}
 
 # Firebase Hosting calls Cloud Run without a Google identity, so the service must accept public requests
 # (the API checks Firebase ID tokens itself). Organisations with "Domain restricted sharing" block allUsers;

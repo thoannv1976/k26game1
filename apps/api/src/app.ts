@@ -12,6 +12,7 @@ import { teacherRoutes } from './routes/teacher.js';
 import { adminRoutes } from './routes/admin.js';
 import { platformRoutes } from './routes/platform.js';
 import { lmsRoutes } from './routes/lms.js';
+import { ltiRoutes } from './routes/lti.js';
 
 export function parseBody<T>(schema: ZodType<T>, data: unknown): T {
   const r = schema.safeParse(data);
@@ -57,6 +58,8 @@ export async function buildApp(deps: Deps, opts: { logger?: boolean } = {}): Pro
   // Authenticate every other /api route.
   app.addHook('preHandler', async (req) => {
     if (req.url === '/api/health' || !req.url.startsWith('/api/')) return;
+    // UniGame Hub launch: the signed Hub ticket in the body is the credential.
+    if (req.url === '/api/lti/launch') return;
     // Service-to-service evidence reads (Game 3) carry a Google ID token instead of a Firebase one.
     if (isServiceRequest(req)) return;
     req.authUser = await authenticate(deps, req);
@@ -67,5 +70,6 @@ export async function buildApp(deps: Deps, opts: { logger?: boolean } = {}): Pro
   await app.register(async (r) => adminRoutes(r, deps));
   await app.register(async (r) => platformRoutes(r, deps));
   await app.register(async (r) => lmsRoutes(r, deps));
+  await app.register(async (r) => ltiRoutes(r, deps));
   return app;
 }

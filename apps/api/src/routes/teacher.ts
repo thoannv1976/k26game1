@@ -10,6 +10,7 @@ import { listApprovedMissions } from '../tenants.js';
 import { audit } from '../audit.js';
 import { canViewStudent, coursesFor } from '../services/access.js';
 import { getResults, reviewAssessment } from '../services/assessment.js';
+import { syncGrade } from '../lti/gradeSync.js';
 
 const STAFF = ['teacher', 'school_admin'] as const;
 
@@ -176,6 +177,7 @@ export async function teacherRoutes(app: FastifyInstance, deps: Deps) {
     const body = parseBody(TeacherReviewInputSchema, req.body);
     const id = (req.params as { id: string }).id;
     const r = await reviewAssessment(deps, m, id, body);
+    await syncGrade(deps, m.tenantId, r, r.teacherReview?.reviewedAt ?? deps.now().toISOString(), req.log);
     await audit(deps, m, m.tenantId, 'assessment.review', id, { status: r.teacherReview?.status, finalPercent: r.finalPercent });
     return { assessment: r };
   });
