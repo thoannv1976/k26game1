@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.0 – unreleased (branch feature/lti-sso)
+
+### Added
+- UniGame Hub (LTI 1.3) single sign-on from Moodle, off unless `LTI_ENABLED=true`.
+  - `POST /api/lti/launch {ticket}` verifies the Hub's one-time signed ticket and creates or reuses an `lti-…` Auth user. These users are keyed by the Hub user id, never by e-mail, so existing accounts are untouched.
+  - It sets the claims `{tenantId, role}` and enrols the user in the course mapped from the Moodle course.
+  - It creates the assignment for the mission the teacher chose and returns a Firebase custom token.
+  - Web page `/lti-launch` signs in with that token and opens the mission (students) or the class page (teachers).
+- Grade sync to Moodle through the Hub. After `complete` and after a teacher review, the final percent is sent for sessions of LTI assignments. Every outcome is logged in `tenants/{t}/lti_outbox`, and a failure never blocks the request.
+- Config: `LTI_ENABLED`, `LTI_HUB_URL`, `LTI_GAME_ID`, `LTI_TENANT_MAP` (`hubTenant=appTenant;…`), and `LTI_GAME_SECRET` (Secret Manager `unigamehub-secret`).
+- `scripts/lti-preview.sh` with `firebase.preview.json` deploys a preview (separate Cloud Run service and Hosting channel).
+
+### Changed
+- Resuming an unfinished session from an assignment link now attaches that assignment to the session.
+
 ## 1.2.0 – 2026-11-01
 
 ### Added

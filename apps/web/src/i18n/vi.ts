@@ -87,6 +87,12 @@ export const vi: Translation = {
     disabledTitle: 'Tài khoản đã bị khóa',
     disabledBody: 'Tài khoản này đã bị khóa. Vui lòng liên hệ quản trị trường.',
   },
+  lti: {
+    signingIn: 'Đang đăng nhập bằng tài khoản Moodle…',
+    noTicket: 'Thiếu thông tin đăng nhập. Hãy mở lại hoạt động từ Moodle.',
+    expired: 'Phiên đăng nhập từ Moodle đã hết hạn hoặc đã được dùng. Hãy quay lại Moodle và bấm vào hoạt động lần nữa.',
+    failed: 'Không đăng nhập được qua Moodle. Vui lòng thử lại hoặc báo giảng viên.',
+  },
   login: {
     tagline: 'Luyện Nghe – Nói tiếng Anh (B1–B2) với nhân vật AI trong một thành phố ảo.',
     title: 'Đăng nhập',

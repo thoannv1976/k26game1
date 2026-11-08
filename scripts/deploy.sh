@@ -3,7 +3,7 @@
 #   bash scripts/deploy.sh            # deploy API + web + rules/indexes to PROJECT_ID
 # Requires: gcloud (logged in), node 22, npm. Reads web config from apps/web/.env.production.
 # Env: PROJECT_ID (default k26game1), REGION (default asia-southeast1), GEMINI_MODEL (default gemini-2.5-flash),
-#      MIN_INSTANCES (default 0), MAX_INSTANCES (default 10)
+#      MIN_INSTANCES (default 0), MAX_INSTANCES (default 10), FIREBASE_ACCOUNT (firebase-tools --account)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -23,17 +23,24 @@ echo "==> Installing dependencies"
 npm ci --no-audit --no-fund
 
 echo "==> Tests (unit)"
-npm run test:unit
+# Unit tests use their own config; do not leak the deploy-time LTI settings into them.
+env -u LTI_ENABLED -u LTI_HUB_URL -u LTI_TENANT_MAP -u LTI_GAME_SECRET npm run test:unit
 
 echo "==> Building API image ${IMAGE} with Cloud Build"
 gcloud builds submit --project "${PROJECT_ID}" --config infrastructure/cloudbuild.api.yaml --substitutions "_IMAGE=${IMAGE}" .
+
+# UniGame Hub (LTI 1.3). Off unless LTI_ENABLED=true; the shared secret lives in Secret Manager.
+LTI_ENV="LTI_ENABLED=${LTI_ENABLED:-false},LTI_HUB_URL=${LTI_HUB_URL:-},LTI_TENANT_MAP=${LTI_TENANT_MAP:-}"
+LTI_SECRET_ARGS=()
+if [[ "${LTI_ENABLED:-false}" == "true" ]]; then LTI_SECRET_ARGS=(--update-secrets "LTI_GAME_SECRET=${LTI_SECRET_NAME:-unigamehub-secret}:latest"); fi
 
 echo "==> Deploying Cloud Run service ecs-api"
 gcloud run deploy ecs-api --project "${PROJECT_ID}" --region "${REGION}" --image "${IMAGE}" \
   --service-account "${RUNTIME_SA}" --allow-unauthenticated \
   --memory 1Gi --cpu 1 --concurrency 40 --timeout 120 \
   --min-instances "${MIN_INSTANCES:-0}" --max-instances "${MAX_INSTANCES:-10}" \
-  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LMS_SERVICE_ACCOUNTS=${LMS_SERVICE_ACCOUNTS:-vstep-api@${PROJECT_ID}.iam.gserviceaccount.com},LOG_LEVEL=info"
+  --set-env-vars "NODE_ENV=production,GCP_PROJECT_ID=${PROJECT_ID},VERTEX_LOCATION=${VERTEX_LOCATION:-${REGION}},AUDIO_BUCKET=${PROJECT_ID}-audio,GEMINI_MODEL=${GEMINI_MODEL},LMS_SERVICE_ACCOUNTS=${LMS_SERVICE_ACCOUNTS:-vstep-api@${PROJECT_ID}.iam.gserviceaccount.com},LOG_LEVEL=info,${LTI_ENV}" \
+  ${LTI_SECRET_ARGS[@]+"${LTI_SECRET_ARGS[@]}"}
 
 # Firebase Hosting calls Cloud Run without a Google identity, so the service must accept public requests
 # (the API checks Firebase ID tokens itself). Organisations with "Domain restricted sharing" block allUsers;
@@ -49,9 +56,9 @@ echo "==> Building web app"
 npm run build --workspace @ecs/web
 
 echo "==> Deploying Firebase Hosting, Firestore rules and indexes"
-npx firebase hosting:sites:get "${PROJECT_ID}" --project "${PROJECT_ID}" >/dev/null 2>&1 || \
-  npx firebase hosting:sites:create "${PROJECT_ID}" --project "${PROJECT_ID}" --non-interactive
-npx firebase deploy --project "${PROJECT_ID}" --only hosting,firestore:rules,firestore:indexes --non-interactive
+npx firebase hosting:sites:get "${PROJECT_ID}" --project "${PROJECT_ID}" ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"} >/dev/null 2>&1 || \
+  npx firebase hosting:sites:create "${PROJECT_ID}" --project "${PROJECT_ID}" --non-interactive ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"}
+npx firebase deploy --project "${PROJECT_ID}" --only hosting,firestore:rules,firestore:indexes --non-interactive ${FIREBASE_ACCOUNT:+--account "$FIREBASE_ACCOUNT"}
 
 echo "==> Smoke test"
 URL="https://${PROJECT_ID}.web.app"

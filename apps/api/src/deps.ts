@@ -1,4 +1,5 @@
 import type { Auth } from 'firebase-admin/auth';
+import type { JWTVerifyGetKey } from 'jose';
 import type { Firestore } from 'firebase-admin/firestore';
 import type { AiProvider } from './ai/types.js';
 import { FakeAiProvider } from './ai/fake.js';
@@ -21,6 +22,9 @@ export interface Deps {
   now: () => Date;
   /** Test hook: verifies Google service ID tokens (default: Google public keys). */
   serviceTokenVerifier?: ServiceTokenVerifier;
+  /** Test hooks for the UniGame Hub adapter (default: Hub JWKS over HTTPS / global fetch). */
+  ltiJwks?: JWTVerifyGetKey;
+  ltiFetch?: typeof fetch;
 }
 
 export function createDeps(config: AppConfig, overrides: Partial<Deps> = {}): Deps {
@@ -40,5 +44,7 @@ export function createDeps(config: AppConfig, overrides: Partial<Deps> = {}): De
           : new MemoryBlobStore()),
     now: overrides.now ?? (() => new Date()),
     serviceTokenVerifier: overrides.serviceTokenVerifier,
+    ltiJwks: overrides.ltiJwks,
+    ltiFetch: overrides.ltiFetch,
   };
 }
