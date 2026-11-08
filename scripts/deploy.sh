@@ -23,7 +23,8 @@ echo "==> Installing dependencies"
 npm ci --no-audit --no-fund
 
 echo "==> Tests (unit)"
-npm run test:unit
+# Unit tests use their own config; do not leak the deploy-time LTI settings into them.
+env -u LTI_ENABLED -u LTI_HUB_URL -u LTI_TENANT_MAP -u LTI_GAME_SECRET npm run test:unit
 
 echo "==> Building API image ${IMAGE} with Cloud Build"
 gcloud builds submit --project "${PROJECT_ID}" --config infrastructure/cloudbuild.api.yaml --substitutions "_IMAGE=${IMAGE}" .
